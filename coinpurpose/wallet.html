@@ -1,16 +1,85 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WALLET</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DANARI WALLET | 당신의 자산, 당신의 주권</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
+  <style>
+    .text-danari-green { color: #9BE28F; }
+    .bg-danari-green { background-color: #9BE28F; }
+  </style>
 </head>
-<body>
-    <h2>WALLET_PAGE입니다</h2>
-    <br>현재는 공사중입니다
-    <br>이곳은 DANARI-COIN을 WALLET관련한 내용을 게시할예정입니다.
-    <br>또한, WALLET의 중요성과 미래에 대해 함께 토론하며, 나아가는 길을 제시할것입니다.
-        
+<body class="bg-gray-950 text-white font-sans">
 
+  <!-- Intro Section -->
+  <section class="text-center py-20 px-6" data-aos="fade-down">
+    <h1 class="text-5xl font-bold text-danari-green">DANARI WALLET</h1>
+    <p class="mt-4 text-xl text-gray-300">
+      자산을 담는 그릇, 미래를 담는 기술
+    </p>
+  </section>
+
+  <!-- Wallet의 중요성 -->
+  <section class="max-w-5xl mx-auto px-6 py-12 text-center" data-aos="fade-up">
+    <h2 class="text-3xl font-semibold mb-6">WALLET은 단순한 보관이 아닙니다</h2>
+    <p class="text-lg text-gray-400">
+      DANARI WALLET은 당신의 자산을 안전하게 지키는 도구이자,<br />
+      스테이블코인 생태계의 연결점입니다.<br />
+      지갑은 당신의 자산 주권을 보장합니다.
+    </p>
+  </section>
+
+  <!-- WALLET 기능 소개 -->
+  <section class="grid grid-cols-1 md:grid-cols-3 gap-8 px-6 md:px-20 py-16" data-aos="fade-up">
+    <div class="bg-gray-800 p-6 rounded-xl shadow hover:scale-105 transition">
+      <h3 class="text-xl font-bold mb-3 text-danari-green">1. 보안성 강화</h3>
+      <p class="text-gray-300">
+        다중 서명, 생체인증, 지갑 복구 기능 등<br />
+        강력한 보안 설계를 바탕으로 설계되었습니다.
+      </p>
+    </div>
+    <div class="bg-gray-800 p-6 rounded-xl shadow hover:scale-105 transition">
+      <h3 class="text-xl font-bold mb-3 text-danari-green">2. 네트워크 확장성</h3>
+      <p class="text-gray-300">
+        이더리움 기반, DANARI 메인넷, 다양한 스테이블 자산 연동까지.<br />
+        다중 체인을 지원합니다.
+      </p>
+    </div>
+    <div class="bg-gray-800 p-6 rounded-xl shadow hover:scale-105 transition">
+      <h3 class="text-xl font-bold mb-3 text-danari-green">3. 사용자 중심 UI</h3>
+      <p class="text-gray-300">
+        직관적 인터페이스와 실시간 알림으로<br />
+        초보자부터 전문가까지 누구나 쉽게 사용할 수 있습니다.
+      </p>
+    </div>
+  </section>
+
+  <!-- 토론 및 미래지향 메시지 -->
+  <section class="text-center py-16 px-6 bg-gray-800" data-aos="fade-up">
+    <h2 class="text-3xl md:text-4xl font-bold mb-4">지갑의 미래, 함께 이야기해요</h2>
+    <p class="text-lg text-gray-300 mb-8">
+      DANARI WALLET이 나아가야 할 방향은 사용자와 함께 만들어갑니다.<br />
+      지갑이 단순한 수단이 아닌 플랫폼이 되는 미래를 함께 그려요.
+    </p>
+    <div class="space-x-4">
+      <a href="#" class="bg-danari-green text-gray-900 px-6 py-3 rounded-full font-semibold shadow hover:scale-105 transition">
+        커뮤니티 토론 참여
+      </a>
+      <a href="#" class="border border-danari-green px-6 py-3 rounded-full font-semibold text-danari-green hover:bg-danari-green hover:text-gray-900 transition">
+        Wallet 앱 다운로드
+      </a>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="text-center py-8 text-gray-500 text-sm">
+    © 2025 DANARI. All rights reserved.
+  </footer>
+
+  <!-- AOS 애니메이션 스크립트 -->
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script>AOS.init();</script>
 </body>
 </html>
