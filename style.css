@@ -295,12 +295,12 @@ section.contact .contact-me::after{
   clear:both;
 }
 section.contact .contact-me .left{
-  width:30%;
+  width:50%;
   float:left;
 }
 section.contact .contact-me .right{
   float:left;
-  width:65%;
+  width:50%;
   margin-left:5%;
 }
 section.contact .contact-me .left .card{
