@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>DANARI 스테이블코인 백서</title>
+        <style>
+                :root {
+                        --primary: #2563eb;
+                        --secondary: #1e40af;
+                        --light: #f8fafc;
+                        --dark: #1e293b;
+                        --gray: #64748b;
+                        --border: #e2e8f0;
+                }
+
+                * {
+                        margin: 0;
+                        padding: 0;
+                        box-sizing: border-box;
+                        font-family: 'Noto Sans KR', sans-serif;
+                }
+
+                body {
+                        background-color: #f1f5f9;
+                        color: var(--dark);
+                        line-height: 1.8;
+                }
+
+                .whitepaper-container {
+                        max-width: 900px;
+                        margin: 0 auto;
+                        padding: 3rem 2rem;
+                        background-color: white;
+                        box-shadow: 0 0 20px rgba(0, 0, 0, 0.05);
+                }
+
+                header {
+                        text-align: center;
+                        margin-bottom: 3rem;
+                        padding-bottom: 2rem;
+                        border-bottom: 1px solid var(--border);
+                }
+
+                h1 {
+                        color: var(--primary);
+                        font-size: 2.5rem;
+                        margin-bottom: 1rem;
+                }
+
+                .subtitle {
+                        font-size: 1.1rem;
+                        color: var(--gray);
+                        margin-bottom: 2rem;
+                }
+
+                .meta-info {
+                        display: flex;
+                        justify-content: center;
+                        gap: 2rem;
+                        color: var(--gray);
+                        font-size: 0.9rem;
+                }
+
+                h2 {
+                        color: var(--primary);
+                        font-size: 1.8rem;
+                        margin: 2.5rem 0 1.5rem;
+                        padding-bottom: 0.5rem;
+                        border-bottom: 1px solid var(--border);
+                }
+
+                h3 {
+                        color: var(--secondary);
+                        font-size: 1.4rem;
+                        margin: 2rem 0 1rem;
+                }
+
+                p {
+                        margin-bottom: 1.2rem;
+                }
+
+                ul,
+                ol {
+                        margin-bottom: 1.5rem;
+                        padding-left: 2rem;
+                }
+
+                li {
+                        margin-bottom: 0.5rem;
+                }
+
+                .table-container {
+                        overflow-x: auto;
+                        margin: 2rem 0;
+                }
+
+                table {
+                        width: 100%;
+                        border-collapse: collapse;
+                        margin: 1.5rem 0;
+                }
+
+                th,
+                td {
+                        padding: 12px 15px;
+                        text-align: left;
+                        border: 1px solid var(--border);
+                }
+
+                th {
+                        background-color: #f8fafc;
+                        font-weight: 600;
+                }
+
+                .notice {
+                        background-color: #f0f9ff;
+                        border-left: 4px solid var(--primary);
+                        padding: 1.5rem;
+                        margin: 2rem 0;
+                        font-size: 0.95rem;
+                }
+
+                footer {
+                        margin-top: 4rem;
+                        padding-top: 2rem;
+                        border-top: 1px solid var(--border);
+                        font-size: 0.9rem;
+                        color: var(--gray);
+                        text-align: center;
+                }
+
+                @media (max-width: 768px) {
+                        .whitepaper-container {
+                                padding: 2rem 1rem;
+                        }
+
+                        h1 {
+                                font-size: 2rem;
+                        }
+
+                        h2 {
+                                font-size: 1.5rem;
+                        }
+
+                        .meta-info {
+                                flex-direction: column;
+                                gap: 0.5rem;
+                        }
+                }
+        </style>
+        <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap"
+                rel="stylesheet">
+</head>
+
+<body>
+        <div class="whitepaper-container">
+                <header>
+                        <h1>DANARI 스테이블코인 백서</h1>
+                        <div class="subtitle">실물 자산 기반의 안정적인 디지털 화폐 시스템</div>
+                        <div class="meta-info">
+                                <span>버전: 1.0</span>
+                                <span>최종 업데이트: 2025년 7월</span>
+                        </div>
+                </header>
+
+                <section id="overview">
+                        <h2>1. 프로젝트 개요</h2>
+                        <p>DANARI는 실물 자산 기반의 스테이블코인 프로젝트입니다. 본 프로젝트는 인천에 위치한 50억 원 규모의 호텔을 담보로 하여 발행되는 디지털 화폐(DUSD)를 통해,
+                                호텔 내부에서 사용 가능한 실물 연동형 결제 시스템을 구축하는 것을 목표로 합니다.</p>
+                </section>
+
+                <section id="problem">
+                        <h2>2. 문제 정의</h2>
+                        <ul>
+                                <li>현금 없는 내부 경제 시스템에 대한 수요 증가</li>
+                                <li>실물 자산과 연결되지 않은 불안정한 코인들에 대한 신뢰 부족</li>
+                                <li>호텔 내 다양한 매장(식당, 당구장, 스파 등) 간 일관된 결제 수단 부재</li>
+                        </ul>
+                </section>
+
+                <section id="solution">
+                        <h2>3. DANARI의 해결책</h2>
+
+                        <h3>3.1 실물 자산 기반</h3>
+                        <p>DANARI는 인천 호텔(시가 50억 원)을 담보로 하여 1 DUSD = 1원 가치의 스테이블코인을 발행합니다. 토큰의 발행은 호텔 실물 자산 가치 내에서만
+                                허용됩니다.</p>
+
+                        <h3>3.2 내부 QR 결제 시스템</h3>
+                        <p>모든 결제는 DANARI 모바일 앱을 통해 QR코드 방식으로 이루어집니다. 사용자와 상점(호텔 내 매장)은 앱 또는 웹을 통해 실시간으로 결제 및 수령이 가능합니다.
+                        </p>
+
+                        <h3>3.3 온체인 기록</h3>
+                        <p>DANARI는 ERC-20 기반의 스마트 컨트랙트를 통해 발행되며, 모든 발행/소각/전송은 투명하게 블록체인에 기록됩니다.</p>
+                </section>
+
+                <section id="tech">
+                        <h2>4. 기술 아키텍처</h2>
+
+                        <h3>4.1 스마트 컨트랙트</h3>
+                        <ul>
+                                <li>ERC-20 기반 DanariStableToken 컨트랙트</li>
+                                <li>소수점: 2자리</li>
+                                <li>총 공급량 제한 없음 (담보 기반 수동 제어)</li>
+                                <li>발행자 권한: MINTER_ROLE 기반</li>
+                        </ul>
+
+                        <h3>4.2 백엔드 시스템</h3>
+                        <ul>
+                                <li>관리자용 API 서버 (FastAPI 기반)</li>
+                                <li>기능: mint, burn, log 조회, 내부 감사용</li>
+                        </ul>
+
+                        <h3>4.3 사용자 애플리케이션</h3>
+                        <ul>
+                                <li>Flutter 기반 모바일 앱 (MetaMask 연동)</li>
+                                <li>QR 결제 스캔/생성 기능 포함</li>
+                        </ul>
+
+                        <h3>4.4 관리자 대시보드</h3>
+                        <ul>
+                                <li>React 기반 웹 대시보드</li>
+                                <li>기능: 발행량, 상점 잔액, 거래 로그 시각화</li>
+                        </ul>
+                </section>
+
+                <section id="token">
+                        <h2>5. 토큰 정보 (DUSD)</h2>
+                        <div class="table-container">
+                                <table>
+                                        <tr>
+                                                <th>항목</th>
+                                                <th>값</th>
+                                        </tr>
+                                        <tr>
+                                                <td>이름</td>
+                                                <td>Danari Stable USD</td>
+                                        </tr>
+                                        <tr>
+                                                <td>심볼</td>
+                                                <td>DUSD</td>
+                                        </tr>
+                                        <tr>
+                                                <td>총공급량</td>
+                                                <td>유동적 (수동 통제)</td>
+                                        </tr>
+                                        <tr>
+                                                <td>소수점</td>
+                                                <td>2자리</td>
+                                        </tr>
+                                        <tr>
+                                                <td>스마트컨트랙트 주소</td>
+                                                <td>(Sepolia 테스트넷 기준 배포됨)</td>
+                                        </tr>
+                                </table>
+                        </div>
+                </section>
+
+                <section id="example">
+                        <h2>6. 사용 예시</h2>
+                        <ul>
+                                <li>호텔 투숙객이 10,000원을 DANARI로 충전 → 10,000 DUSD 지급</li>
+                                <li>식당에서 6,500원 결제 → QR 스캔으로 6,500 DUSD 전송</li>
+                                <li>남은 금액은 스파, 편의점, 당구장 등에서 자유롭게 사용</li>
+                        </ul>
+                </section>
+
+                <section id="collateral">
+                        <h2>7. 담보 및 감사</h2>
+                        <ul>
+                                <li>DANARI는 실물 호텔 담보 기반으로 토큰을 발행</li>
+                                <li>담보 자산 평가는 회계법인 또는 감사 시스템에 의해 정기적 점검</li>
+                                <li>모든 발행 및 소각은 관리자 API를 통해 통제되며, 스마트 컨트랙트는 투명하게 공개</li>
+                        </ul>
+                </section>
+
+                <section id="roadmap">
+                        <h2>8. 로드맵</h2>
+                        <div class="table-container">
+                                <table>
+                                        <tr>
+                                                <th>분기</th>
+                                                <th>목표</th>
+                                        </tr>
+                                        <tr>
+                                                <td>2025 Q3</td>
+                                                <td>MVP 개발, 테스트넷 배포, 내부 도입 시범 운영</td>
+                                        </tr>
+                                        <tr>
+                                                <td>2025 Q4</td>
+                                                <td>실사용 환경 적용 (호텔 전체)</td>
+                                        </tr>
+                                        <tr>
+                                                <td>2026 Q1</td>
+                                                <td>외부 상점 연동 확대, KYC 및 법률 인증 연동</td>
+                                        </tr>
+                                </table>
+                        </div>
+                </section>
+
+                <section id="conclusion">
+                        <h2>9. 결론</h2>
+                        <p>DANARI는 실물 자산에 기반하여 발행되는 신뢰할 수 있는 스테이블코인으로, 호텔이라는 고정된 공간에서 시작하여 점차 외부 서비스로 확장 가능한 결제 인프라를
+                                제공합니다. 실물 담보 기반의 투명하고 안전한 블록체인 결제를 원하는 사용자에게 현실적인 대안을 제공합니다.</p>
+                </section>
+
+                <div class="notice">
+                        본 백서는 DANARI MVP 기반으로 작성되었으며, 추후 시스템 고도화 및 감사 보고에 따라 내용이 보완될 수 있습니다.
+                </div>
+
+                <footer>
+                        <p>© 2025 DANARI 프로젝트 팀. 모든 권리 보유.</p>
+                </footer>
+        </div>
+</body>
+
+</html>
