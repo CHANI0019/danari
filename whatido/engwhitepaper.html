@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DANARI Stablecoin Whitepaper</title>
+    <style>
+        :root {
+            --primary: #2563eb;
+            --secondary: #1e40af;
+            --light: #f8fafc;
+            --dark: #1e293b;
+            --gray: #64748b;
+            --border: #e2e8f0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: #f1f5f9;
+            color: var(--dark);
+            line-height: 1.8;
+        }
+
+        .whitepaper-container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+            background-color: white;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.05);
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        h1 {
+            color: var(--primary);
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .subtitle {
+            font-size: 1.1rem;
+            color: var(--gray);
+            margin-bottom: 2rem;
+        }
+
+        .meta-info {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+
+        h2 {
+            color: var(--primary);
+            font-size: 1.8rem;
+            margin: 2.5rem 0 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        h3 {
+            color: var(--secondary);
+            font-size: 1.4rem;
+            margin: 2rem 0 1rem;
+        }
+
+        p {
+            margin-bottom: 1.2rem;
+        }
+
+        ul,
+        ol {
+            margin-bottom: 1.5rem;
+            padding-left: 2rem;
+        }
+
+        li {
+            margin-bottom: 0.5rem;
+        }
+
+        .table-container {
+            overflow-x: auto;
+            margin: 2rem 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+        }
+
+        th,
+        td {
+            padding: 12px 15px;
+            text-align: left;
+            border: 1px solid var(--border);
+        }
+
+        th {
+            background-color: #f8fafc;
+            font-weight: 600;
+        }
+
+        .notice {
+            background-color: #f0f9ff;
+            border-left: 4px solid var(--primary);
+            padding: 1.5rem;
+            margin: 2rem 0;
+            font-size: 0.95rem;
+        }
+
+        footer {
+            margin-top: 4rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--border);
+            font-size: 0.9rem;
+            color: var(--gray);
+            text-align: center;
+        }
+
+        @media (max-width: 768px) {
+            .whitepaper-container {
+                padding: 2rem 1rem;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            h2 {
+                font-size: 1.5rem;
+            }
+
+            .meta-info {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="whitepaper-container">
+        <header>
+            <h1>DANARI Stablecoin Whitepaper</h1>
+            <div class="subtitle">Asset-Backed Digital Currency System</div>
+            <div class="meta-info">
+                <span>Version: 1.0</span>
+                <span>Last Updated: July 2025</span>
+            </div>
+        </header>
+
+        <section id="overview">
+            <h2>1. Project Overview</h2>
+            <p>DANARI is a stablecoin project backed by real-world assets. The project aims to establish a tangible
+                payment system usable within a hotel by issuing a digital currency (DUSD) collateralized by a hotel
+                located in Incheon, valued at 5 billion KRW.</p>
+        </section>
+
+        <section id="problem">
+            <h2>2. Problem Definition</h2>
+            <ul>
+                <li>Growing demand for cashless internal economic systems</li>
+                <li>Lack of trust in unstable coins not tied to real-world assets</li>
+                <li>Absence of a unified payment method across various hotel facilities (restaurants, billiard halls,
+                    spas, etc.)</li>
+            </ul>
+        </section>
+
+        <section id="solution">
+            <h2>3. DANARI Solution</h2>
+
+            <h3>3.1 Real Asset-Backed</h3>
+            <p>DANARI issues a stablecoin (1 DUSD = 1 KRW) collateralized by the Incheon hotel (valued at 5 billion
+                KRW). Token issuance is strictly limited to the hotel's real asset value.</p>
+
+            <h3>3.2 QR Payment System</h3>
+            <p>All transactions are processed via QR code through the DANARI mobile app. Users and merchants (hotel
+                facilities) can send and receive payments in real-time via the app or web.</p>
+
+            <h3>3.3 On-Chain Transparency</h3>
+            <p>DANARI is issued as an ERC-20-based smart contract, ensuring all minting, burning, and transfers are
+                transparently recorded on the blockchain.</p>
+        </section>
+
+        <section id="tech">
+            <h2>4. Technical Architecture</h2>
+
+            <h3>4.1 Smart Contract</h3>
+            <ul>
+                <li>ERC-20 based DanariStableToken contract</li>
+                <li>Decimals: 2</li>
+                <li>No total supply limit (manually controlled based on collateral)</li>
+                <li>Issuer privilege: MINTER_ROLE based</li>
+            </ul>
+
+            <h3>4.2 Backend System</h3>
+            <ul>
+                <li>Admin API server (FastAPI based)</li>
+                <li>Functions: mint, burn, log queries, internal auditing</li>
+            </ul>
+
+            <h3>4.3 User Application</h3>
+            <ul>
+                <li>Mobile app (Flutter based with MetaMask integration)</li>
+                <li>QR payment scan/generation functionality</li>
+            </ul>
+
+            <h3>4.4 Admin Dashboard</h3>
+            <ul>
+                <li>Web dashboard (React based)</li>
+                <li>Functions: supply monitoring, merchant balances, transaction log visualization</li>
+            </ul>
+        </section>
+
+        <section id="token">
+            <h2>5. Token Specifications (DUSD)</h2>
+            <div class="table-container">
+                <table>
+                    <tr>
+                        <th>Item</th>
+                        <th>Value</th>
+                    </tr>
+                    <tr>
+                        <td>Name</td>
+                        <td>Danari Stable USD</td>
+                    </tr>
+                    <tr>
+                        <td>Symbol</td>
+                        <td>DUSD</td>
+                    </tr>
+                    <tr>
+                        <td>Total Supply</td>
+                        <td>Dynamic (Manual Control)</td>
+                    </tr>
+                    <tr>
+                        <td>Decimals</td>
+                        <td>2</td>
+                    </tr>
+                    <tr>
+                        <td>Smart Contract</td>
+                        <td>(Deployed on Sepolia Testnet)</td>
+                    </tr>
+                </table>
+            </div>
+        </section>
+
+        <section id="example">
+            <h2>6. Use Case Example</h2>
+            <ul>
+                <li>Hotel guest deposits 10,000 KRW into DANARI → Receives 10,000 DUSD</li>
+                <li>Pays 6,500 DUSD at restaurant via QR scan</li>
+                <li>Remaining 3,500 DUSD can be freely used at other facilities (spa, convenience store, etc.)</li>
+            </ul>
+        </section>
+
+        <section id="collateral">
+            <h2>7. Collateral & Auditing</h2>
+            <ul>
+                <li>DANARI tokens are issued based on the real hotel collateral</li>
+                <li>Collateral valuation is periodically reviewed by accounting firms</li>
+                <li>All minting/burning is controlled via admin API with publicly verifiable smart contract</li>
+            </ul>
+        </section>
+
+        <section id="roadmap">
+            <h2>8. Roadmap</h2>
+            <div class="table-container">
+                <table>
+                    <tr>
+                        <th>Quarter</th>
+                        <th>Goal</th>
+                    </tr>
+                    <tr>
+                        <td>2025 Q3</td>
+                        <td>MVP development, testnet deployment, pilot launch</td>
+                    </tr>
+                    <tr>
+                        <td>2025 Q4</td>
+                        <td>Full-scale adoption (hotel-wide)</td>
+                    </tr>
+                    <tr>
+                        <td>2026 Q1</td>
+                        <td>External merchant expansion, KYC & legal compliance</td>
+                    </tr>
+                </table>
+            </div>
+        </section>
+
+        <section id="conclusion">
+            <h2>9. Conclusion</h2>
+            <p>DANARI is a trusted stablecoin backed by real-world assets, starting within a hotel environment and
+                gradually expanding to external services. It offers a transparent, secure blockchain payment alternative
+                for users seeking asset-backed stability.</p>
+        </section>
+
+        <div class="notice">
+            This whitepaper is based on the DANARI MVP and may be updated as the system evolves or audit reports are
+            finalized.
+        </div>
+
+        <footer>
+            <p>© 2025 DANARI Project Team. All rights reserved.</p>
+        </footer>
+    </div>
+</body>
+
+</html>
