@@ -1,93 +1,101 @@
 <!DOCTYPE html>
 <html lang="ko">
+
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>DANARI-COIN | 안정된 미래를 위한 선택</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
-  <style>
-    .text-danari-green {
-      color: #9BE28F;
-    }
-    .bg-danari-green {
-      background-color: #9BE28F;
-    }
-  </style>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DANARI-COIN | 안정된 미래를 위한 선택</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
+    <style>
+        .text-danari-green {
+            color: #9BE28F;
+        }
+
+        .bg-danari-green {
+            background-color: #9BE28F;
+        }
+    </style>
 </head>
+
 <body class="bg-gray-900 text-white font-sans">
 
-  <!-- Header -->
-  <header class="text-center py-16" data-aos="fade-down">
-    <h1 class="text-5xl font-bold tracking-tight text-danari-green">DANARI-COIN</h1>
-    <p class="mt-4 text-xl text-gray-300">안정된 가치는 곧, 미래를 향한 길입니다</p>
-  </header>
+    <!-- Header -->
+    <header class="text-center py-16" data-aos="fade-down">
+        <h1 class="text-5xl font-bold tracking-tight text-danari-green">DANARI-COIN</h1>
+        <p class="mt-4 text-xl text-gray-300">안정된 가치는 곧, 미래를 향한 길입니다</p>
+    </header>
 
-  <!-- 안정성 설명 -->
-  <section class="px-6 md:px-20 lg:px-40 py-12 bg-gray-800 rounded-xl mx-4 my-10" data-aos="fade-up">
-    <h2 class="text-3xl font-semibold text-center mb-6">왜 DANARI-COIN인가?</h2>
-    <p class="text-lg text-center text-gray-300">
-      DANARI-COIN은 실물 기반 자산(예: 삼성전자 주식 100,000주 등)을 담보로 발행되며,
-      가격 안정성과 신뢰성을 겸비한 스테이블코인입니다.
-    </p>
-  </section>
+    <!-- 안정성 설명 -->
+    <section class="px-6 md:px-20 lg:px-40 py-12 bg-gray-800 rounded-xl mx-4 my-10" data-aos="fade-up">
+        <h2 class="text-3xl font-semibold text-center mb-6">왜 DANARI-COIN인가?</h2>
+        <p class="text-lg text-center text-gray-300">
+            DANARI-COIN은 실물 기반 자산(예: 삼성전자 주식 100,000주 등)을 담보로 발행되며,
+            가격 안정성과 신뢰성을 겸비한 스테이블코인입니다.
+        </p>
+    </section>
 
-  <!-- 지표 시각화 -->
-  <section class="px-6 md:px-20 py-10" data-aos="fade-up">
-    <h2 class="text-2xl font-bold text-center mb-6">실시간 담보 자산 비율</h2>
-    <div class="max-w-xl mx-auto bg-gray-800 p-6 rounded-2xl shadow-xl">
-      <canvas id="reserveChart"></canvas>
-    </div>
-  </section>
+    <!-- 지표 시각화 -->
+    <section class="px-6 md:px-20 py-10" data-aos="fade-up">
+        <h2 class="text-2xl font-bold text-center mb-6">실시간 담보 자산 비율</h2>
+        <div class="max-w-xl mx-auto bg-gray-800 p-6 rounded-2xl shadow-xl">
+            <canvas id="reserveChart"></canvas>
+        </div>
+    </section>
 
-  <!-- 미래지향 메시지 -->
-  <section class="text-center py-16 px-6" data-aos="fade-up">
-    <h2 class="text-3xl md:text-4xl font-bold mb-6">가치는 변하지 않습니다.</h2>
-    <p class="text-lg text-gray-400 mb-10">
-      DANARI-COIN은 실물 기반, 자동화된 유동성 시스템, 그리고<br />
-      자본의 안전성을 동시에 제공합니다.
-    </p>
-    <a href="whatido\whatepaper.html" target="_blank">
-    <button class="bg-danari-green text-gray-900 font-semibold px-6 py-3 rounded-full shadow-lg transition hover:scale-105">
-      백서 다운로드
-    </button>
-  </section>
+    <!-- 미래지향 메시지 -->
+    <section class="text-center py-16 px-6" data-aos="fade-up">
+        <h2 class="text-3xl md:text-4xl font-bold mb-6">가치는 변하지 않습니다.</h2>
+        <p class="text-lg text-gray-400 mb-10">
+            DANARI-COIN은 실물 기반, 자동화된 유동성 시스템, 그리고<br />
+            자본의 안전성을 동시에 제공합니다.
+        </p>
+        <a href="whitepaper.html" target="_blank">
+            <button class="bg-danari-green text-gray-900 font-semibold px-6 py-3 rounded-full shadow-lg transition hover:scale-105">
+                백서 다운로드
+            </button>
 
-  <!-- Footer -->
-  <footer class="text-center py-8 border-t border-gray-700 text-gray-500 text-sm">
-    © 2025 DANARI. All rights reserved.
-  </footer>
 
-  <!-- AOS + Chart.js 초기화 -->
-  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-  <script>
-    AOS.init();
+        </a>
+        
+    </section>
 
-    const ctx = document.getElementById('reserveChart').getContext('2d');
-    new Chart(ctx, {
-      type: 'doughnut',
-      data: {
-        labels: ['자산 담보율', '미사용 발행량'],
-        datasets: [{
-          data: [92, 8], // 예시 수치: 담보 92%, 여유분 8%
-          backgroundColor: ['#9BE28F', '#374151'],
-          borderColor: ['#9BE28F', '#374151'],
-          borderWidth: 1
-        }]
-      },
-      options: {
-        plugins: {
-          legend: {
-            labels: {
-              color: 'white',
-              font: { size: 14 }
+    <!-- Footer -->
+    <footer class="text-center py-8 border-t border-gray-700 text-gray-500 text-sm">
+        © 2025 DANARI. All rights reserved.
+    </footer>
+
+    <!-- AOS + Chart.js 초기화 -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init();
+
+        const ctx = document.getElementById('reserveChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: ['자산 담보율', '미사용 발행량'],
+                datasets: [{
+                    data: [92, 8], // 예시 수치: 담보 92%, 여유분 8%
+                    backgroundColor: ['#9BE28F', '#374151'],
+                    borderColor: ['#9BE28F', '#374151'],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                plugins: {
+                    legend: {
+                        labels: {
+                            color: 'white',
+                            font: { size: 14 }
+                        }
+                    }
+                }
             }
-          }
-        }
-      }
-    });
-  </script>
+        });
+    </script>
 
 </body>
+
 </html>
