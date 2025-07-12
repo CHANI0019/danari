@@ -5,236 +5,275 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DANARI Stablecoin Whitepaper</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
+        /* Basic Styles and Color Variables */
         :root {
-            --primary: #2563eb;
-            --secondary: #1e40af;
-            --light: #f8fafc;
-            --dark: #1e293b;
-            --gray: #64748b;
-            --border: #e2e8f0;
+            --primary-color: #0052FF;
+            --secondary-color: #00D1B2;
+            --text-color: #363636;
+            --light-text-color: #7a7a7a;
+            --bg-color: #f5f7fa;
+            --card-bg-color: #ffffff;
+            --border-color: #e1e4e8;
+            --header-font-weight: 700;
+            --body-font-weight: 400;
         }
 
-        * {
+        /* Smooth Scrolling */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Global Page Styles */
+        body {
+            font-family: 'Poppins', sans-serif;
+            line-height: 1.8;
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
-            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
         }
 
-        body {
-            background-color: #f1f5f9;
-            color: var(--dark);
-            line-height: 1.8;
-        }
-
-        .whitepaper-container {
-            max-width: 900px;
-            margin: 0 auto;
-            padding: 3rem 2rem;
-            background-color: white;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.05);
-        }
-
-        header {
-            text-align: center;
-            margin-bottom: 3rem;
-            padding-bottom: 2rem;
-            border-bottom: 1px solid var(--border);
-        }
-
-        h1 {
-            color: var(--primary);
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
-        }
-
-        .subtitle {
-            font-size: 1.1rem;
-            color: var(--gray);
-            margin-bottom: 2rem;
-        }
-
-        .meta-info {
+        /* Top Navigation Bar */
+        .navbar {
+            background-color: var(--card-bg-color);
+            padding: 1rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
             display: flex;
             justify-content: center;
-            gap: 2rem;
-            color: var(--gray);
-            font-size: 0.9rem;
+            align-items: center;
+            flex-wrap: wrap;
         }
 
-        h2 {
-            color: var(--primary);
+        .navbar a {
+            color: var(--primary-color);
+            text-decoration: none;
+            margin: 0 15px;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .navbar a:hover {
+            color: var(--secondary-color);
+        }
+
+        /* Main Content Container */
+        .container {
+            max-width: 960px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        /* Header Styles */
+        header {
+            text-align: center;
+            margin-bottom: 50px;
+            padding: 40px 20px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border-radius: 12px;
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            margin: 0;
+            font-weight: var(--header-font-weight);
+        }
+
+        header .meta-info {
+            font-size: 1rem;
+            opacity: 0.9;
+            margin-top: 10px;
+        }
+
+        /* Section Card Styles */
+        .section {
+            background-color: var(--card-bg-color);
+            margin-bottom: 30px;
+            padding: 30px 40px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            border: 1px solid var(--border-color);
+            scroll-margin-top: 100px;
+            /* Offset for sticky navbar */
+        }
+
+        .section h2 {
             font-size: 1.8rem;
-            margin: 2.5rem 0 1.5rem;
-            padding-bottom: 0.5rem;
-            border-bottom: 1px solid var(--border);
+            color: var(--primary-color);
+            margin-top: 0;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--primary-color);
+            font-weight: var(--header-font-weight);
         }
 
-        h3 {
-            color: var(--secondary);
-            font-size: 1.4rem;
-            margin: 2rem 0 1rem;
+        .section h3 {
+            font-size: 1.3rem;
+            color: var(--text-color);
+            margin-top: 25px;
+            margin-bottom: 15px;
+            font-weight: 500;
+            border-left: 4px solid var(--secondary-color);
+            padding-left: 10px;
         }
 
-        p {
-            margin-bottom: 1.2rem;
-        }
-
+        /* List Styles */
         ul,
         ol {
-            margin-bottom: 1.5rem;
-            padding-left: 2rem;
+            padding-left: 25px;
         }
 
         li {
-            margin-bottom: 0.5rem;
+            margin-bottom: 12px;
+            color: var(--light-text-color);
         }
 
-        .table-container {
-            overflow-x: auto;
-            margin: 2rem 0;
+        li strong {
+            color: var(--text-color);
         }
 
+        /* Table Styles */
         table {
             width: 100%;
             border-collapse: collapse;
-            margin: 1.5rem 0;
+            margin-top: 20px;
         }
 
         th,
         td {
-            padding: 12px 15px;
+            border: 1px solid var(--border-color);
+            padding: 15px;
             text-align: left;
-            border: 1px solid var(--border);
+            vertical-align: middle;
         }
 
         th {
-            background-color: #f8fafc;
-            font-weight: 600;
+            background-color: #f8f9fa;
+            font-weight: 500;
+            color: var(--primary-color);
         }
 
-        .notice {
-            background-color: #f0f9ff;
-            border-left: 4px solid var(--primary);
-            padding: 1.5rem;
-            margin: 2rem 0;
-            font-size: 0.95rem;
+        tbody tr:nth-child(even) {
+            background-color: #fdfdfd;
         }
 
+        tbody tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        /* Code Block Styles */
+        code {
+            background-color: #e9ecef;
+            padding: 3px 6px;
+            border-radius: 4px;
+            font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace;
+            font-size: 0.9em;
+        }
+
+        /* Footer Styles */
         footer {
-            margin-top: 4rem;
-            padding-top: 2rem;
-            border-top: 1px solid var(--border);
-            font-size: 0.9rem;
-            color: var(--gray);
             text-align: center;
-        }
-
-        @media (max-width: 768px) {
-            .whitepaper-container {
-                padding: 2rem 1rem;
-            }
-
-            h1 {
-                font-size: 2rem;
-            }
-
-            h2 {
-                font-size: 1.5rem;
-            }
-
-            .meta-info {
-                flex-direction: column;
-                gap: 0.5rem;
-            }
+            padding: 30px;
+            color: var(--light-text-color);
+            font-size: 0.9rem;
         }
     </style>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
 </head>
 
 <body>
-    <div class="whitepaper-container">
+
+    <!-- Top Navigation -->
+    <nav class="navbar">
+        <a href="#overview">Overview</a>
+        <a href="#solution">Solution</a>
+        <a href="#architecture">Technology</a>
+        <a href="#token-info">Tokenomics</a>
+        <a href="#roadmap">Roadmap</a>
+        <a href="#conclusion">Conclusion</a>
+    </nav>
+
+    <div class="container">
         <header>
             <h1>DANARI Stablecoin Whitepaper</h1>
-            <div class="subtitle">Asset-Backed Digital Currency System</div>
-            <div class="meta-info">
-                <span>Version: 1.0</span>
-                <span>Last Updated: July 2025</span>
-            </div>
+            <p class="meta-info">A Stable Digital Currency System Backed by Real-World Assets<br>
+                Version: 1.0 | Last Updated: July 2025</p>
         </header>
 
-        <section id="overview">
+        <div class="section" id="overview">
             <h2>1. Project Overview</h2>
-            <p>DANARI is a stablecoin project backed by real-world assets. The project aims to establish a tangible
-                payment system usable within a hotel by issuing a digital currency (DUSD) collateralized by a hotel
-                located in Incheon, valued at 5 billion KRW.</p>
-        </section>
+            <p>DANARI is a stablecoin project backed by real-world assets. The project aims to build a real-world-linked
+                payment system usable across all company-operated business sites through a digital currency (DUSD)
+                issued against the company's assets as collateral.</p>
+        </div>
 
-        <section id="problem">
+        <div class="section" id="problem">
             <h2>2. Problem Definition</h2>
             <ul>
-                <li>Growing demand for cashless internal economic systems</li>
-                <li>Lack of trust in unstable coins not tied to real-world assets</li>
-                <li>Absence of a unified payment method across various hotel facilities (restaurants, billiard halls,
-                    spas, etc.)</li>
+                <li>Increasing demand for a cashless internal economic system.</li>
+                <li>Lack of trust in unstable coins not linked to real-world assets.</li>
+                <li>Absence of a consistent payment method across various stores (restaurants, billiard halls, spas,
+                    etc.) within all company-operated business sites.</li>
             </ul>
-        </section>
+        </div>
 
-        <section id="solution">
-            <h2>3. DANARI Solution</h2>
-
-            <h3>3.1 Real Asset-Backed</h3>
-            <p>DANARI issues a stablecoin (1 DUSD = 1 KRW) collateralized by the Incheon hotel (valued at 5 billion
-                KRW). Token issuance is strictly limited to the hotel's real asset value.</p>
-
-            <h3>3.2 QR Payment System</h3>
-            <p>All transactions are processed via QR code through the DANARI mobile app. Users and merchants (hotel
-                facilities) can send and receive payments in real-time via the app or web.</p>
-
-            <h3>3.3 On-Chain Transparency</h3>
-            <p>DANARI is issued as an ERC-20-based smart contract, ensuring all minting, burning, and transfers are
+        <div class="section" id="solution">
+            <h2>3. DANARI's Solution</h2>
+            <h3>3.1 Backed by Real-World Assets</h3>
+            <p>DANARI issues a stablecoin with a value of <strong>1 DUSD = 1 KRW</strong>, collateralized by the
+                company's assets. Token issuance is permitted only within the value of the company's real-world assets.
+            </p>
+            <h3>3.2 Internal QR Payment System</h3>
+            <p>All payments are made via QR codes through the DANARI mobile app. Users and all company-operated business
+                sites can make and receive payments in real-time through the app or web.</p>
+            <h3>3.3 On-Chain Records</h3>
+            <p>DANARI is issued via an ERC-20 based smart contract, and all issuance, burning, and transfers are
                 transparently recorded on the blockchain.</p>
-        </section>
+        </div>
 
-        <section id="tech">
+        <div class="section" id="architecture">
             <h2>4. Technical Architecture</h2>
-
             <h3>4.1 Smart Contract</h3>
             <ul>
-                <li>ERC-20 based DanariStableToken contract</li>
-                <li>Decimals: 2</li>
-                <li>No total supply limit (manually controlled based on collateral)</li>
-                <li>Issuer privilege: MINTER_ROLE based</li>
+                <li><strong>Base:</strong> ERC-20 <code>DanariStableToken</code> contract</li>
+                <li><strong>Decimals:</strong> 8</li>
+                <li><strong>Total Supply:</strong> No limit (manually controlled based on collateral)</li>
+                <li><strong>Permissions:</strong> Minter rights based on <code>MINTER_ROLE</code></li>
             </ul>
-
             <h3>4.2 Backend System</h3>
             <ul>
-                <li>Admin API server (FastAPI based)</li>
-                <li>Functions: mint, burn, log queries, internal auditing</li>
+                <li><strong>Server:</strong> Admin API server (based on FastAPI)</li>
+                <li><strong>Functions:</strong> mint, burn, log inquiry, internal auditing</li>
             </ul>
-
             <h3>4.3 User Application</h3>
             <ul>
-                <li>Mobile app (Flutter based with MetaMask integration)</li>
-                <li>QR payment scan/generation functionality</li>
+                <li><strong>Platform:</strong> Flutter-based mobile app (with MetaMask integration)</li>
+                <li><strong>Key Feature:</strong> Includes QR payment scanning/generation</li>
             </ul>
-
             <h3>4.4 Admin Dashboard</h3>
             <ul>
-                <li>Web dashboard (React based)</li>
-                <li>Functions: supply monitoring, merchant balances, transaction log visualization</li>
+                <li><strong>Platform:</strong> React-based web dashboard</li>
+                <li><strong>Functions:</strong> Visualization of issuance volume, store balances, and transaction logs
+                </li>
             </ul>
-        </section>
+        </div>
 
-        <section id="token">
-            <h2>5. Token Specifications (DUSD)</h2>
-            <div class="table-container">
-                <table>
+        <div class="section" id="token-info">
+            <h2>5. Token Information (DUSD)</h2>
+            <table>
+                <thead>
                     <tr>
                         <th>Item</th>
                         <th>Value</th>
                     </tr>
+                </thead>
+                <tbody>
                     <tr>
                         <td>Name</td>
                         <td>Danari Stable USD</td>
@@ -245,78 +284,83 @@
                     </tr>
                     <tr>
                         <td>Total Supply</td>
-                        <td>Dynamic (Manual Control)</td>
+                        <td>Flexible (Manually Controlled)</td>
                     </tr>
                     <tr>
                         <td>Decimals</td>
-                        <td>2</td>
+                        <td>8</td>
                     </tr>
                     <tr>
-                        <td>Smart Contract</td>
-                        <td>(Deployed on Sepolia Testnet)</td>
+                        <td>Smart Contract Address</td>
+                        <td>(Deployed on Sepolia testnet)</td>
                     </tr>
-                </table>
-            </div>
-        </section>
+                </tbody>
+            </table>
+        </div>
 
-        <section id="example">
-            <h2>6. Use Case Example</h2>
+        <div class="section" id="use-case">
+            <h2>6. Use Case</h2>
+            <ol>
+                <li>A user tops up 10,000 KRW to DANARI → receives <strong>10,000 DUSD</strong>.</li>
+                <li>Makes a payment of 6,500 KRW at a company-operated business site → transfers <strong>6,500
+                        DUSD</strong> via QR scan.</li>
+                <li>The remaining balance can be freely used at spas, convenience stores, billiard halls, etc.</li>
+            </ol>
+        </div>
+
+        <div class="section" id="audit">
+            <h2>7. Collateral & Audit</h2>
             <ul>
-                <li>Hotel guest deposits 10,000 KRW into DANARI → Receives 10,000 DUSD</li>
-                <li>Pays 6,500 DUSD at restaurant via QR scan</li>
-                <li>Remaining 3,500 DUSD can be freely used at other facilities (spa, convenience store, etc.)</li>
+                <li>DANARI issues tokens based on real-world asset collateral.</li>
+                <li>The valuation of collateral assets is periodically reviewed by an accounting firm or an audit
+                    system.</li>
+                <li>All issuance and burning are controlled via an admin API, and the smart contract is transparently
+                    public.</li>
             </ul>
-        </section>
+        </div>
 
-        <section id="collateral">
-            <h2>7. Collateral & Auditing</h2>
-            <ul>
-                <li>DANARI tokens are issued based on the real hotel collateral</li>
-                <li>Collateral valuation is periodically reviewed by accounting firms</li>
-                <li>All minting/burning is controlled via admin API with publicly verifiable smart contract</li>
-            </ul>
-        </section>
-
-        <section id="roadmap">
+        <div class="section" id="roadmap">
             <h2>8. Roadmap</h2>
-            <div class="table-container">
-                <table>
+            <table>
+                <thead>
                     <tr>
                         <th>Quarter</th>
-                        <th>Goal</th>
+                        <th>Objective</th>
                     </tr>
+                </thead>
+                <tbody>
                     <tr>
                         <td>2025 Q3</td>
-                        <td>MVP development, testnet deployment, pilot launch</td>
+                        <td>MVP development, testnet deployment, internal pilot operation</td>
                     </tr>
                     <tr>
                         <td>2025 Q4</td>
-                        <td>Full-scale adoption (hotel-wide)</td>
+                        <td>Application to live environment (entire hotel)</td>
                     </tr>
                     <tr>
                         <td>2026 Q1</td>
-                        <td>External merchant expansion, KYC & legal compliance</td>
+                        <td>Expansion to external merchants, integration of KYC and legal certification</td>
                     </tr>
-                </table>
-            </div>
-        </section>
+                </tbody>
+            </table>
+        </div>
 
-        <section id="conclusion">
+        <div class="section" id="conclusion">
             <h2>9. Conclusion</h2>
-            <p>DANARI is a trusted stablecoin backed by real-world assets, starting within a hotel environment and
-                gradually expanding to external services. It offers a transparent, secure blockchain payment alternative
-                for users seeking asset-backed stability.</p>
-        </section>
-
-        <div class="notice">
-            This whitepaper is based on the DANARI MVP and may be updated as the system evolves or audit reports are
-            finalized.
+            <p>DANARI is a reliable stablecoin issued based on real-world assets, providing a payment infrastructure
+                that starts in a fixed space—all company-operated business sites—and can gradually expand to external
+                services. It offers a realistic alternative for users who want transparent and secure blockchain
+                payments backed by real-world collateral.</p>
+            <p><em>This whitepaper is based on the DANARI MVP and may be supplemented with further system enhancements
+                    and audit reports in the future.</em></p>
         </div>
 
         <footer>
-            <p>© 2025 DANARI Project Team. All rights reserved.</p>
+            <p>© 2025 The DANARI Project Team. All rights reserved.</p>
         </footer>
+
     </div>
+
 </body>
 
 </html>
