@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DANARI P2P Platform</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap');
+
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background-color: #f7fafc;
+        }
+
+        .tab-btn.active {
+            border-color: #3b82f6;
+            background-color: #eff6ff;
+            color: #3b82f6;
+        }
+
+        .modal-backdrop {
+            transition: opacity 0.3s ease;
+        }
+
+        .modal-content {
+            transition: transform 0.3s ease;
+        }
+
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #d1d5db;
+            border-radius: 3px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #9ca3af;
+        }
+    </style>
+</head>
+
+<body class="p-4 md:p-8">
+
+    <div class="max-w-7xl mx-auto">
+        <!-- Header -->
+        <header class="flex flex-col md:flex-row justify-between items-center mb-8">
+            <div class="flex items-center">
+                <div
+                    class="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center text-white font-bold text-xl mr-3">
+                    D</div>
+                <h1 class="text-3xl font-bold text-gray-800">DANARI P2P Platform</h1>
+            </div>
+            <div class="text-sm text-gray-500 mt-2 md:mt-0">개인 간 DUSD와 원화(KRW)를 안전하게 거래하세요.</div>
+        </header>
+
+        <!-- Main Layout -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+
+            <!-- Marketplace (Order Lists) -->
+            <div class="lg:col-span-2 bg-white rounded-xl shadow-lg p-6">
+                <div class="flex border-b mb-4">
+                    <button id="buy-tab" class="tab-btn flex-1 py-3 text-lg font-semibold border-b-2">DUSD 구매</button>
+                    <button id="sell-tab" class="tab-btn flex-1 py-3 text-lg font-semibold border-b-2">DUSD 판매</button>
+                </div>
+
+                <!-- Order List Container -->
+                <div id="order-list-container" class="space-y-4 h-[600px] overflow-y-auto pr-2">
+                    <!-- Orders will be injected here -->
+                </div>
+            </div>
+
+            <!-- User Panel -->
+            <div class="lg:col-span-1 space-y-8">
+                <!-- My Wallet -->
+                <div class="bg-white rounded-xl shadow-lg p-6">
+                    <h2 class="text-xl font-bold mb-4">나의 지갑</h2>
+                    <div class="space-y-3">
+                        <div class="flex justify-between items-center">
+                            <span class="text-gray-600">DUSD 잔액:</span>
+                            <span id="user-dusd-balance" class="font-bold text-lg text-blue-600"></span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-gray-600">원화(KRW) 잔액:</span>
+                            <span id="user-krw-balance" class="font-bold text-lg"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Create Offer -->
+                <div class="bg-white rounded-xl shadow-lg p-6">
+                    <h2 class="text-xl font-bold mb-4">판매 오더 등록</h2>
+                    <form id="create-offer-form" class="space-y-4">
+                        <div>
+                            <label for="sell-amount" class="block text-sm font-medium text-gray-700">판매할 DUSD 금액</label>
+                            <input type="number" id="sell-amount"
+                                class="mt-1 w-full border-gray-300 rounded-md shadow-sm" placeholder="예: 5000" required>
+                        </div>
+                        <div>
+                            <label for="payment-method" class="block text-sm font-medium text-gray-700">정산받을 계좌</label>
+                            <input type="text" id="payment-method"
+                                class="mt-1 w-full border-gray-300 rounded-md shadow-sm" value="카카오뱅크 3333-..."
+                                required>
+                        </div>
+                        <button type="submit"
+                            class="w-full bg-blue-600 text-white font-bold py-3 rounded-lg hover:bg-blue-700 transition">판매
+                            등록하기</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Transaction Modal -->
+    <div id="tx-modal"
+        class="modal-backdrop fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 hidden opacity-0">
+        <div class="modal-content bg-white w-full max-w-md rounded-xl p-6 shadow-lg transform scale-95">
+            <h2 id="modal-title" class="text-2xl font-bold mb-4"></h2>
+            <div class="space-y-3 text-gray-700">
+                <div class="flex justify-between"><span class="font-semibold">거래 상대:</span> <span
+                        id="modal-peer"></span></div>
+                <div class="flex justify-between"><span class="font-semibold">거래 금액 (DUSD):</span> <span id="modal-dusd"
+                        class="font-mono"></span></div>
+                <div class="flex justify-between"><span class="font-semibold">결제 금액 (KRW):</span> <span id="modal-krw"
+                        class="font-mono"></span></div>
+                <div class="flex justify-between"><span class="font-semibold">결제 수단:</span> <span
+                        id="modal-payment"></span></div>
+            </div>
+            <p id="modal-instruction" class="mt-6 text-sm bg-yellow-100 text-yellow-800 p-3 rounded-lg"></p>
+            <div class="pt-6 flex justify-end space-x-3">
+                <button type="button" id="cancel-tx"
+                    class="px-5 py-2 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300">취소</button>
+                <button type="button" id="confirm-tx"
+                    class="px-5 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">거래 확정</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- MOCK DATA ---
+            let currentUser = { name: 'Me', dusdBalance: 50000, krwBalance: 1000000 };
+            let sellOrders = [
+                { id: 1, user: 'User_A1B2', amount: 10000, price: 1.0, paymentMethod: '카카오뱅크' },
+                { id: 2, user: 'User_C3D4', amount: 50000, price: 1.0, paymentMethod: '토스뱅크' },
+                { id: 3, user: 'User_E5F6', amount: 2500, price: 1.0, paymentMethod: '신한은행' },
+            ];
+
+            // --- STATE ---
+            let activeTab = 'buy'; // 'buy' or 'sell'
+            let currentTx = null;
+
+            // --- DOM ELEMENTS ---
+            const userDusdEl = document.getElementById('user-dusd-balance');
+            const userKrwEl = document.getElementById('user-krw-balance');
+            const buyTab = document.getElementById('buy-tab');
+            const sellTab = document.getElementById('sell-tab');
+            const orderListContainer = document.getElementById('order-list-container');
+            const createOfferForm = document.getElementById('create-offer-form');
+            const txModal = document.getElementById('tx-modal');
+
+            // --- FUNCTIONS ---
+            const formatKRW = (amount) => `${amount.toLocaleString()} KRW`;
+            const formatDUSD = (amount) => `${amount.toLocaleString()} DUSD`;
+
+            const renderWallet = () => {
+                userDusdEl.textContent = formatDUSD(currentUser.dusdBalance);
+                userKrwEl.textContent = formatKRW(currentUser.krwBalance);
+            };
+
+            const renderOrders = () => {
+                orderListContainer.innerHTML = '';
+                const ordersToRender = activeTab === 'buy' ? sellOrders : []; // For MVP, we only show sell orders to buy from
+
+                if (ordersToRender.length === 0) {
+                    orderListContainer.innerHTML = `<div class="text-center text-gray-500 py-20">
+                        <p class="text-lg">거래 가능한 오더가 없습니다.</p>
+                        <p class="text-sm mt-2">${activeTab === 'buy' ? 'DUSD를 판매하는 사람이 없습니다.' : '직접 판매 오더를 등록해보세요.'}</p>
+                    </div>`;
+                    return;
+                }
+
+                ordersToRender.forEach(order => {
+                    const orderEl = document.createElement('div');
+                    orderEl.className = 'border rounded-lg p-4 flex flex-col md:flex-row justify-between items-center space-y-2 md:space-y-0 hover:bg-gray-50 transition';
+                    orderEl.innerHTML = `
+                        <div class="flex items-center">
+                            <div class="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center font-bold text-gray-600 mr-4">${order.user.substring(0, 1)}</div>
+                            <div>
+                                <p class="font-semibold">${order.user}</p>
+                                <p class="text-sm text-gray-500">${order.paymentMethod}</p>
+                            </div>
+                        </div>
+                        <div class="text-center">
+                            <p class="font-bold text-lg">${formatDUSD(order.amount)}</p>
+                            <p class="text-sm text-gray-500">@ ${formatKRW(order.amount * order.price)}</p>
+                        </div>
+                        <button data-order-id="${order.id}" class="buy-btn w-full md:w-auto bg-green-500 text-white font-bold py-2 px-6 rounded-lg hover:bg-green-600 transition">
+                            구매하기
+                        </button>
+                    `;
+                    orderListContainer.appendChild(orderEl);
+                });
+            };
+
+            const switchTab = (tab) => {
+                activeTab = tab;
+                buyTab.classList.toggle('active', tab === 'buy');
+                sellTab.classList.toggle('active', tab === 'sell');
+                renderOrders();
+            };
+
+            const openModal = (order) => {
+                currentTx = order;
+                document.getElementById('modal-title').textContent = 'DUSD 구매 확정';
+                document.getElementById('modal-peer').textContent = order.user;
+                document.getElementById('modal-dusd').textContent = formatDUSD(order.amount);
+                document.getElementById('modal-krw').textContent = formatKRW(order.amount * order.price);
+                document.getElementById('modal-payment').textContent = order.paymentMethod;
+                document.getElementById('modal-instruction').textContent = `거래 확정 시, 판매자에게 원화를 이체해야 합니다. 판매자가 입금을 확인하면 DUSD가 지갑으로 전송됩니다. (이체는 외부에서 진행)`;
+
+                txModal.classList.remove('hidden');
+                setTimeout(() => {
+                    txModal.classList.remove('opacity-0');
+                    txModal.querySelector('.modal-content').classList.remove('scale-95');
+                }, 10);
+            };
+
+            const closeModal = () => {
+                txModal.classList.add('opacity-0');
+                txModal.querySelector('.modal-content').classList.add('scale-95');
+                setTimeout(() => txModal.classList.add('hidden'), 300);
+                currentTx = null;
+            };
+
+            // --- EVENT LISTENERS ---
+            buyTab.addEventListener('click', () => switchTab('buy'));
+            sellTab.addEventListener('click', () => switchTab('sell'));
+
+            orderListContainer.addEventListener('click', (e) => {
+                if (e.target.classList.contains('buy-btn')) {
+                    const orderId = parseInt(e.target.dataset.orderId);
+                    const order = sellOrders.find(o => o.id === orderId);
+                    if (order) openModal(order);
+                }
+            });
+
+            createOfferForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const amount = parseFloat(document.getElementById('sell-amount').value);
+                const paymentMethod = document.getElementById('payment-method').value;
+
+                if (!amount || amount <= 0 || !paymentMethod) {
+                    alert('유효한 금액과 결제 수단을 입력하세요.');
+                    return;
+                }
+                if (amount > currentUser.dusdBalance) {
+                    alert('DUSD 잔액이 부족합니다.');
+                    return;
+                }
+
+                currentUser.dusdBalance -= amount;
+                const newOrder = {
+                    id: Date.now(),
+                    user: currentUser.name,
+                    amount,
+                    price: 1.0,
+                    paymentMethod
+                };
+
+                // For MVP, we add user's sell offer to the list of things others can buy
+                sellOrders.unshift(newOrder);
+                alert('판매 오더가 성공적으로 등록되었습니다.');
+                createOfferForm.reset();
+                renderWallet();
+                if (activeTab === 'buy') renderOrders();
+            });
+
+            document.getElementById('cancel-tx').addEventListener('click', closeModal);
+
+            document.getElementById('confirm-tx').addEventListener('click', () => {
+                if (!currentTx) return;
+
+                const krwCost = currentTx.amount * currentTx.price;
+                if (currentUser.krwBalance < krwCost) {
+                    alert('원화 잔액이 부족합니다.');
+                    return;
+                }
+
+                currentUser.krwBalance -= krwCost;
+                currentUser.dusdBalance += currentTx.amount;
+
+                sellOrders = sellOrders.filter(o => o.id !== currentTx.id);
+
+                alert(`${formatDUSD(currentTx.amount)} 구매가 완료되었습니다.`);
+                renderWallet();
+                renderOrders();
+                closeModal();
+            });
+
+            // --- INITIALIZATION ---
+            renderWallet();
+            switchTab('buy');
+        });
+    </script>
+</body>
+
+</html>
