@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DANARI 풀노드 운영 가이드</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap');
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background-color: #f8fafc;
+        }
+
+        .sidebar-link.active {
+            color: #2563eb;
+            font-weight: 700;
+            border-left-color: #2563eb;
+        }
+
+        .code-block {
+            position: relative;
+        }
+
+        .copy-btn {
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+            background-color: #4b5563;
+            color: white;
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.25rem;
+            font-size: 0.75rem;
+            cursor: pointer;
+            opacity: 0.5;
+            transition: opacity 0.2s;
+        }
+
+        .code-block:hover .copy-btn {
+            opacity: 1;
+        }
+    </style>
+</head>
+
+<body class="text-gray-800">
+
+    <div class="max-w-7xl mx-auto flex">
+        <!-- Sidebar Navigation -->
+        <aside class="hidden lg:block sticky top-0 h-screen w-64 flex-shrink-0 py-10 pr-8">
+            <div class="flex items-center mb-8">
+                <div
+                    class="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center text-white font-bold text-lg mr-2">
+                    D</div>
+                <h2 class="text-lg font-bold">풀노드 가이드</h2>
+            </div>
+            <nav class="flex flex-col space-y-2">
+                <a href="#intro"
+                    class="sidebar-link text-gray-600 hover:text-blue-600 py-2 border-l-4 border-transparent pl-4 transition-colors">1.
+                    풀노드란?</a>
+                <a href="#prerequisites"
+                    class="sidebar-link text-gray-600 hover:text-blue-600 py-2 border-l-4 border-transparent pl-4 transition-colors">2.
+                    사전 준비사항</a>
+                <a href="#setup"
+                    class="sidebar-link text-gray-600 hover:text-blue-600 py-2 border-l-4 border-transparent pl-4 transition-colors">3.
+                    설치 및 설정 (Geth)</a>
+                <a href="#operation"
+                    class="sidebar-link text-gray-600 hover:text-blue-600 py-2 border-l-4 border-transparent pl-4 transition-colors">4.
+                    노드 운영 및 관리</a>
+                <a href="#commands"
+                    class="sidebar-link text-gray-600 hover:text-blue-600 py-2 border-l-4 border-transparent pl-4 transition-colors">5.
+                    유용한 명령어</a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="flex-grow bg-white min-h-screen p-6 md:p-12 shadow-lg">
+            <header class="border-b pb-6 mb-10">
+                <h1 class="text-4xl font-bold text-gray-900">DANARI 풀노드 운영 가이드</h1>
+                <p class="mt-2 text-lg text-gray-600">DANARI 네트워크의 안정성과 탈중앙성을 함께 만들어갑니다.</p>
+            </header>
+
+            <!-- 1. Introduction -->
+            <section id="intro" class="mb-16 scroll-mt-20">
+                <h2 class="text-2xl font-bold mb-4">1. 풀노드(Full Node)란 무엇인가요?</h2>
+                <p class="mb-4">풀노드는 이더리움 블록체인의 모든 거래 기록(블록)을 다운로드하고 검증하는 핵심 소프트웨어입니다. DANARI 프로젝트에서 풀노드를 직접 운영하는 것은 다음과
+                    같은 중요한 의미를 가집니다.</p>
+                <div class="grid md:grid-cols-2 gap-4">
+                    <div class="bg-blue-50 border-l-4 border-blue-500 p-4 rounded-r-lg">
+                        <h3 class="font-semibold">✅ 신뢰성 및 보안 강화</h3>
+                        <p class="text-sm">제3자 서비스에 의존하지 않고 직접 트랜잭션을 검증하고 블록체인에 전송함으로써, DANARI 스마트 컨트랙트와 상호작용할 때 최고의 보안
+                            수준을 유지할 수 있습니다.</p>
+                    </div>
+                    <div class="bg-green-50 border-l-4 border-green-500 p-4 rounded-r-lg">
+                        <h3 class="font-semibold">🌐 네트워크 탈중앙성 기여</h3>
+                        <p class="text-sm">자체 노드를 운영하는 것은 이더리움 네트워크의 탈중앙성과 회복탄력성을 높이는 데 직접적으로 기여하는 행위입니다. 이는 DANARI 생태계의
+                            안정성으로 이어집니다.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 2. Prerequisites -->
+            <section id="prerequisites" class="mb-16 scroll-mt-20">
+                <h2 class="text-2xl font-bold mb-4">2. 사전 준비사항</h2>
+                <p class="mb-6">안정적인 노드 운영을 위해 아래의 최소 사양을 권장합니다. 특히, 블록체인 데이터는 용량이 크므로 빠른 속도의 SSD는 필수적입니다.</p>
+                <div class="bg-white rounded-lg border border-gray-200 p-6">
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+                        <div><span class="text-4xl">🖥️</span>
+                            <p class="mt-2 font-semibold">운영체제</p>
+                            <p class="text-sm text-gray-600">Linux (Ubuntu 20.04+)</p>
+                        </div>
+                        <div><span class="text-4xl">⚙️</span>
+                            <p class="mt-2 font-semibold">CPU</p>
+                            <p class="text-sm text-gray-600">4+ Cores</p>
+                        </div>
+                        <div><span class="text-4xl">🧠</span>
+                            <p class="mt-2 font-semibold">RAM</p>
+                            <p class="text-sm text-gray-600">16GB 이상</p>
+                        </div>
+                        <div><span class="text-4xl">💾</span>
+                            <p class="mt-2 font-semibold">저장공간</p>
+                            <p class="text-sm text-gray-600">2TB+ NVMe SSD</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 3. Setup -->
+            <section id="setup" class="mb-16 scroll-mt-20">
+                <h2 class="text-2xl font-bold mb-4">3. 설치 및 설정 (Geth 클라이언트 기준)</h2>
+                <p class="mb-6">가장 널리 사용되는 이더리움 클라이언트인 Go Ethereum(Geth)를 사용하여 Sepolia 테스트넷 풀노드를 설정하는 과정입니다.</p>
+
+                <div class="space-y-8">
+                    <div>
+                        <h3 class="text-xl font-semibold mb-2">Step 1: Geth 설치 (Ubuntu)</h3>
+                        <p class="text-sm mb-2 text-gray-600">Geth 공식 PPA(개인 패키지 아카이브)를 추가하여 설치합니다.</p>
+                        <div class="code-block">
+                            <pre class="bg-gray-800 text-white p-4 rounded-lg overflow-x-auto"><code id="code-1">sudo add-apt-repository -y ppa:ethereum/ethereum
+sudo apt-get update
+sudo apt-get install ethereum</code></pre>
+                            <button class="copy-btn" data-code-id="code-1">복사</button>
+                        </div>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-semibold mb-2">Step 2: 노드 실행</h3>
+                        <p class="text-sm mb-2 text-gray-600">DANARI MVP 단계에서는 Sepolia 테스트넷에 연결합니다. 아래 명령어로 노드를 실행하세요.
+                        </p>
+                        <div class="code-block">
+                            <pre
+                                class="bg-gray-800 text-white p-4 rounded-lg overflow-x-auto"><code id="code-2">geth --sepolia --datadir ~/danari-node --http --http.api eth,net,web3 --ws --ws.api eth,net,web3 --authrpc.jwtsecret ~/danari-node/jwt.hex</code></pre>
+                            <button class="copy-btn" data-code-id="code-2">복사</button>
+                        </div>
+                        <div class="mt-4 text-xs text-gray-500 space-y-1">
+                            <p><strong class="font-semibold">--sepolia:</strong> Sepolia 테스트넷에 연결합니다.</p>
+                            <p><strong class="font-semibold">--datadir:</strong> 블록체인 데이터가 저장될 디렉토리를 지정합니다.</p>
+                            <p><strong class="font-semibold">--http, --ws:</strong> 외부에서 노드와 통신할 수 있는 HTTP 및 WebSocket
+                                RPC 엔드포인트를 활성화합니다.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 4. Operation -->
+            <section id="operation" class="mb-16 scroll-mt-20">
+                <h2 class="text-2xl font-bold mb-4">4. 노드 운영 및 관리</h2>
+                <div class="space-y-8">
+                    <div>
+                        <h3 class="text-xl font-semibold mb-2">동기화 상태 확인</h3>
+                        <p class="text-sm mb-2 text-gray-600">노드가 최신 블록까지 동기화되었는지 확인하려면, 새 터미널을 열고 Geth 콘솔에 접속하여
+                            `eth.syncing`을 입력합니다. 동기화가 완료되면 `false`를 반환합니다.</p>
+                        <div class="code-block">
+                            <pre
+                                class="bg-gray-800 text-white p-4 rounded-lg overflow-x-auto"><code id="code-3">geth attach ~/danari-node/geth.ipc</code></pre>
+                            <button class="copy-btn" data-code-id="code-3">복사</button>
+                        </div>
+                        <div class="code-block mt-2">
+                            <pre class="bg-gray-800 text-white p-4 rounded-lg overflow-x-auto"><code>> eth.syncing
+{
+  currentBlock: 1400515,
+  highestBlock: 4785234,
+  ...
+}
+// 또는 동기화 완료 시:
+> eth.syncing
+false</code></pre>
+                        </div>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-semibold mb-2">보안 권장 사항</h3>
+                        <p class="text-sm mb-2 text-gray-600">외부 공격으로부터 노드를 보호하기 위해 방화벽을 설정하고, 필요한 포트(기본값: 30303)만 허용하는
+                            것이 좋습니다.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 5. Useful Commands -->
+            <section id="commands" class="scroll-mt-20">
+                <h2 class="text-2xl font-bold mb-4">5. 유용한 Geth 콘솔 명령어</h2>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm text-left">
+                        <thead class="text-xs text-gray-700 uppercase bg-gray-100">
+                            <tr>
+                                <th class="px-6 py-3">명령어</th>
+                                <th class="px-6 py-3">설명</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="bg-white border-b">
+                                <td class="px-6 py-4 font-mono">eth.blockNumber</td>
+                                <td class="px-6 py-4">현재 동기화된 최신 블록의 번호를 확인합니다.</td>
+                            </tr>
+                            <tr class="bg-white border-b">
+                                <td class="px-6 py-4 font-mono">net.peerCount</td>
+                                <td class="px-6 py-4">현재 연결된 다른 노드(피어)의 수를 확인합니다.</td>
+                            </tr>
+                            <tr class="bg-white border-b">
+                                <td class="px-6 py-4 font-mono">eth.getBalance("주소")</td>
+                                <td class="px-6 py-4">특정 이더리움 주소의 잔액(ETH)을 확인합니다.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Copy to clipboard functionality
+            const copyButtons = document.querySelectorAll('.copy-btn');
+            copyButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const codeId = button.dataset.codeId;
+                    const codeElement = document.getElementById(codeId);
+                    const codeToCopy = codeElement.innerText;
+
+                    navigator.clipboard.writeText(codeToCopy).then(() => {
+                        button.textContent = '복사 완료!';
+                        setTimeout(() => {
+                            button.textContent = '복사';
+                        }, 2000);
+                    }).catch(err => {
+                        console.error('Copy failed', err);
+                    });
+                });
+            });
+
+            // Active sidebar link on scroll
+            const sections = document.querySelectorAll('section');
+            const navLinks = document.querySelectorAll('.sidebar-link');
+
+            const activateLink = (id) => {
+                navLinks.forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href') === `#${id}`) {
+                        link.classList.add('active');
+                    }
+                });
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        activateLink(entry.target.id);
+                    }
+                });
+            }, { rootMargin: "-50% 0px -50% 0px" });
+
+            sections.forEach(section => {
+                observer.observe(section);
+            });
+        });
+    </script>
+</body>
+
+</html>
