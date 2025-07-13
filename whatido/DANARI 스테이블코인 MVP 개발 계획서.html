@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DANARI MVP 인터랙티브 개발 계획서</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.1/dist/chart.min.js"></script>
+    <!-- Chosen Palette: Tech Corporate Blue -->
+    <!-- Application Structure Plan: 4단계 개발 로드맵을 시각적인 탭(Tab) 구조로 설계했습니다. 사용자는 각 개발 단계(설계, 백엔드, 프론트엔드, 테스트)를 클릭하며 해당 단계의 목표와 상세 과업을 확인할 수 있습니다. 이 구조는 긴 스크롤의 선형적인 문서를 탐색이 용이한 인터랙티브 대시보드로 전환하여, 복잡한 개발 과정을 한눈에 파악하고 단계별로 집중할 수 있게 합니다. 이는 사용자가 프로젝트의 전체 흐름을 직관적으로 이해하도록 돕기 위해 선택되었습니다. -->
+    <!-- Visualization & Content Choices: 
+        - 정보: MVP 개발 4단계 로드맵 -> 목표: 단계별 과업의 시각적 구성 -> 시각화: 탭(Tab) 기반의 카드 레이아웃 -> 상호작용: 탭 클릭 시 해당 단계의 상세 카드 표시.
+        - 정보: 기술 아키텍처 -> 목표: 서버-블록체인 연동 관계 설명 -> 시각화: HTML/CSS로 구현한 순서도 -> 상호작용: 각 요소에 마우스 호버 시 설명 하이라이트.
+        - 정보: 통합 테스트 시나리오 -> 목표: 테스트 과정의 동적 시뮬레이션 -> 시각화: '테스트 실행' 버튼 -> 상호작용: 버튼 클릭 시 시나리오 단계가 순차적으로 나타남.
+        - 이 모든 선택은 정적인 텍스트 정보를 동적이고 이해하기 쉬운 시각적 요소로 변환하기 위한 것입니다. Chart.js는 타임라인 시각화를 위해 사용됩니다.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap');
+
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background-color: #f0f4f8;
+        }
+
+        .tab-btn.active {
+            border-color: #2563eb;
+            color: #2563eb;
+            background-color: #dbeafe;
+        }
+
+        .task-card {
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .task-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+
+        .flow-diagram-step {
+            transition: background-color 0.3s, border-color 0.3s;
+        }
+
+        .highlight-step {
+            background-color: #dbeafe;
+            border-color: #2563eb;
+        }
+
+        .scenario-step {
+            transition: opacity 0.5s, transform 0.5s;
+            opacity: 0;
+            transform: translateY(10px);
+        }
+
+        .scenario-step.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+
+<body class="p-4 md:p-8">
+
+    <main class="max-w-7xl mx-auto bg-white rounded-2xl shadow-xl p-6 md:p-10">
+
+        <header class="text-center mb-10 border-b pb-6">
+            <h1 class="text-4xl font-bold text-gray-800">DANARI 스테이블코인</h1>
+            <p class="text-xl text-blue-600 mt-2">MVP 인터랙티브 개발 계획서</p>
+        </header>
+
+        <section class="mb-12">
+            <h2 class="text-2xl font-bold text-gray-700 mb-2">프로젝트 목표</h2>
+            <div class="bg-blue-50 border-l-4 border-blue-500 text-blue-800 p-4 rounded-r-lg">
+                <p>"소규모별로 통제된 환경(회사가 취득한 자산)에서, 관리자가 원화 입금을 기반으로 DUSD를 발행하고, 사용자가 이 DUSD를 QR코드로 결제하는 핵심 사이클을 기술적으로 증명합니다."</p>
+            </div>
+            <div class="mt-4">
+                <h3 class="font-semibold text-lg text-gray-600 mb-3">성공 측정 기준</h3>
+                <div class="grid md:grid-cols-3 gap-4 text-center">
+                    <div class="bg-gray-50 p-4 rounded-lg">✅ <span class="font-semibold">기능</span>: QR 결제 최소 1회 성공</div>
+                    <div class="bg-gray-50 p-4 rounded-lg">💾 <span class="font-semibold">데이터</span>: 모든 거래의 정확한 기록
+                    </div>
+                    <div class="bg-gray-50 p-4 rounded-lg">👍 <span class="font-semibold">피드백</span>: 긍정적인 내부 테스트 경험
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="mb-12">
+            <h2 class="text-2xl font-bold text-gray-700 mb-4">개발 로드맵 타임라인</h2>
+            <div class="chart-container relative h-24 md:h-56 w-full">
+                <canvas id="timelineChart"></canvas>
+            </div>
+        </section>
+
+        <div>
+            <div id="tabs" class="flex flex-wrap -mb-px border-b border-gray-200">
+                <button data-tab="1"
+                    class="tab-btn text-lg font-semibold p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300">Phase
+                    1: 설계 및 기획</button>
+                <button data-tab="2"
+                    class="tab-btn text-lg font-semibold p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300">Phase
+                    2: 백엔드 & 컨트랙트</button>
+                <button data-tab="3"
+                    class="tab-btn text-lg font-semibold p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300">Phase
+                    3: 프론트엔드</button>
+                <button data-tab="4"
+                    class="tab-btn text-lg font-semibold p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300">Phase
+                    4: 테스트 & 운영</button>
+            </div>
+
+            <div id="tab-content" class="pt-8">
+                <!-- Phase 1 Content -->
+                <div id="tab-1" class="tab-pane">
+                    <h3 class="text-xl font-bold text-gray-800 mb-4">목표: MVP 기능 범위 확정 및 시스템 청사진 설계</h3>
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div class="task-card bg-gray-50 p-6 rounded-lg">
+                            <h4 class="font-bold text-lg mb-2">✔️ MVP 기능 명세</h4>
+                            <ul class="list-disc list-inside space-y-2">
+                                <li><b>관리자:</b> 발행량 확인, DUSD 발행, 거래 내역 조회</li>
+                                <li><b>사용자:</b> 회원가입, 잔액 확인, QR 결제, 거래 내역 조회</li>
+                            </ul>
+                        </div>
+                        <div class="task-card bg-gray-50 p-6 rounded-lg">
+                            <h4 class="font-bold text-lg mb-2">📝 UI/UX 와이어프레임</h4>
+                            <p>Figma, Balsamiq 등을 활용하여 사용자 앱과 관리자 대시보드의 핵심 화면 흐름(Flow)을 스케치합니다.</p>
+                        </div>
+                        <div class="task-card bg-gray-50 p-6 rounded-lg">
+                            <h4 class="font-bold text-lg mb-2">🏗️ 기술 아키텍처 & DB 설계</h4>
+                            <p>시스템 구조도, API 명세, 데이터베이스 스키마를 정의하여 기술적 기반을 마련합니다.</p>
+                        </div>
+                        <div class="task-card bg-gray-50 p-6 rounded-lg">
+                            <h4 class="font-bold text-lg mb-2">🛠️ 개발 환경 구축</h4>
+                            <p>GitHub 저장소 생성 및 Jira, Trello 등 프로젝트 관리 도구를 통해 개발 일정을 체계적으로 관리합니다.</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Phase 2 Content -->
+                <div id="tab-2" class="tab-pane hidden">
+                    <h3 class="text-xl font-bold text-gray-800 mb-4">목표: 시스템의 핵심 엔진인 서버 로직과 블록체인 계약 개발</h3>
+                    <p class="mb-6 text-gray-600">관리자의 발행 요청이 블록체인에 기록되기까지의 핵심 로직을 구현합니다. 아래 다이어그램의 각 단계에 마우스를 올려보세요.
+                    </p>
+                    <div class="flow-diagram space-y-4 text-center">
+                        <div id="flow-step-1"
+                            class="flow-diagram-step bg-white p-4 border-2 border-gray-200 rounded-lg shadow-sm">1. 관리자가
+                            대시보드에서 '토큰 발행' 요청</div>
+                        <div class="text-2xl text-gray-400">⬇️</div>
+                        <div id="flow-step-2"
+                            class="flow-diagram-step bg-white p-4 border-2 border-gray-200 rounded-lg shadow-sm">2. 백엔드
+                            서버가 API 호출을 수신하고 유효성 검증</div>
+                        <div class="text-2xl text-gray-400">⬇️</div>
+                        <div id="flow-step-3"
+                            class="flow-diagram-step bg-white p-4 border-2 border-gray-200 rounded-lg shadow-sm">3. 서버가
+                            `ethers.js`를 통해 스마트 컨트랙트의 `mint` 함수 실행</div>
+                        <div class="text-2xl text-gray-400">⬇️</div>
+                        <div id="flow-step-4"
+                            class="flow-diagram-step bg-white p-4 border-2 border-gray-200 rounded-lg shadow-sm">4.
+                            테스트넷에서 트랜잭션 처리 후, 결과(Tx Hash)를 서버에 반환</div>
+                        <div class="text-2xl text-gray-400">⬇️</div>
+                        <div id="flow-step-5"
+                            class="flow-diagram-step bg-white p-4 border-2 border-gray-200 rounded-lg shadow-sm">5. 서버가
+                            해당 트랜잭션 정보를 내부 DB에 저장</div>
+                    </div>
+                </div>
+                <!-- Phase 3 Content -->
+                <div id="tab-3" class="tab-pane hidden">
+                    <h3 class="text-xl font-bold text-gray-800 mb-4">목표: 사용자와 관리자가 상호작용할 화면 개발</h3>
+                    <div class="grid md:grid-cols-2 gap-8">
+                        <div class="task-card bg-blue-50 p-6 rounded-lg border border-blue-200">
+                            <h4 class="font-bold text-lg mb-2 text-blue-800">🖥️ 관리자 대시보드 (React)</h4>
+                            <p class="text-blue-700">핵심 지표(총 발행량, 담보 가치 등)를 시각화하고, 'DUSD 발행' 기능을 구현하여 관리자가 시스템을 통제할 수
+                                있도록 합니다.</p>
+                        </div>
+                        <div class="task-card bg-green-50 p-6 rounded-lg border border-green-200">
+                            <h4 class="font-bold text-lg mb-2 text-green-800">📱 사용자 앱 (Web App)</h4>
+                            <p class="text-green-700">사용자가 잔액 확인, QR코드 스캔을 통한 결제, 거래 내역 조회를 할 수 있는 웹 기반 애플리케이션을 개발합니다.
+                                MVP 단계에서는 빠른 개발을 위해 웹앱을 우선합니다.</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Phase 4 Content -->
+                <div id="tab-4" class="tab-pane hidden">
+                    <h3 class="text-xl font-bold text-gray-800 mb-4">목표: 시스템 통합 검증 및 내부 사용자 피드백 수집</h3>
+                    <div class="bg-yellow-50 border-l-4 border-yellow-500 text-yellow-800 p-6 rounded-r-lg">
+                        <h4 class="font-bold text-lg mb-2">통합 테스트 시나리오</h4>
+                        <p class="mb-4">아래 '테스트 실행' 버튼을 클릭하여 전체 결제 흐름이 정상적으로 작동하는지 시뮬레이션 해보세요.</p>
+                        <button id="run-test-btn"
+                            class="bg-yellow-400 hover:bg-yellow-500 text-yellow-900 font-bold py-2 px-4 rounded transition">테스트
+                            실행</button>
+                        <div id="scenario-output" class="mt-4 space-y-2">
+                            <!-- Scenario steps will be injected here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const tabs = document.querySelectorAll('.tab-btn');
+            const panes = document.querySelectorAll('.tab-pane');
+
+            // Tab switching logic
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    const tabId = tab.dataset.tab;
+
+                    tabs.forEach(t => t.classList.remove('active'));
+                    tab.classList.add('active');
+
+                    panes.forEach(pane => {
+                        if (pane.id === `tab-${tabId}`) {
+                            pane.classList.remove('hidden');
+                        } else {
+                            pane.classList.add('hidden');
+                        }
+                    });
+                });
+            });
+            // Set initial active tab
+            tabs[0].click();
+
+            // Phase 2: Flow diagram interaction
+            const flowSteps = document.querySelectorAll('.flow-diagram-step');
+            flowSteps.forEach(step => {
+                step.addEventListener('mouseenter', () => step.classList.add('highlight-step'));
+                step.addEventListener('mouseleave', () => step.classList.remove('highlight-step'));
+            });
+
+            // Phase 4: Test scenario simulation
+            const runTestBtn = document.getElementById('run-test-btn');
+            const scenarioOutput = document.getElementById('scenario-output');
+            const scenarioSteps = [
+                "1. [사용자] 앱 가입 및 지갑 생성 완료.",
+                "2. [관리자] 사용자 원화 입금 확인 후 10,000 DUSD 발행.",
+                "3. [사용자] 잔액에 10,000 DUSD가 정상적으로 표시됨.",
+                "4. [사용자] 호텔 레스토랑에서 6,500 DUSD QR 결제 시도.",
+                "5. [시스템] 트랜잭션 성공! 사용자 잔액 3,500 DUSD로 변경.",
+                "6. [시스템] 레스토랑 지갑 잔액 6,500 DUSD 증가.",
+                "7. ✅ 테스트 성공: 모든 잔액 및 거래 기록이 정확합니다."
+            ];
+
+            runTestBtn.addEventListener('click', () => {
+                runTestBtn.disabled = true;
+                runTestBtn.textContent = '테스트 진행 중...';
+                scenarioOutput.innerHTML = '';
+
+                let i = 0;
+                const interval = setInterval(() => {
+                    if (i < scenarioSteps.length) {
+                        const stepEl = document.createElement('p');
+                        stepEl.className = 'scenario-step';
+                        stepEl.textContent = scenarioSteps[i];
+                        scenarioOutput.appendChild(stepEl);
+                        setTimeout(() => stepEl.classList.add('visible'), 50);
+                        i++;
+                    } else {
+                        clearInterval(interval);
+                        runTestBtn.disabled = false;
+                        runTestBtn.textContent = '테스트 다시 실행';
+                    }
+                }, 800);
+            });
+
+            // Timeline Chart
+            const ctx = document.getElementById('timelineChart').getContext('2d');
+            const timelineChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Phase 1: 설계/기획', 'Phase 2: 백엔드/컨트랙트', 'Phase 3: 프론트엔드', 'Phase 4: 테스트/운영'],
+                    datasets: [{
+                        label: '최소 기간 (주)',
+                        data: [1, 2, 3, 2],
+                        backgroundColor: 'rgba(59, 130, 246, 0.5)',
+                        borderColor: 'rgba(59, 130, 246, 1)',
+                        borderWidth: 1,
+                        stack: 'weeks',
+                        barPercentage: 0.5
+                    }, {
+                        label: '추가 기간 (주)',
+                        data: [1, 1, 1, 1], // (최대기간 - 최소기간)
+                        backgroundColor: 'rgba(147, 197, 253, 0.5)',
+                        borderColor: 'rgba(147, 197, 253, 1)',
+                        borderWidth: 1,
+                        stack: 'weeks',
+                        barPercentage: 0.5
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        title: { display: true, text: '단계별 예상 개발 기간 (단위: 주)', padding: { bottom: 20 } },
+                        tooltip: {
+                            callbacks: {
+                                label: function (context) {
+                                    const label = context.dataset.label || '';
+                                    const value = context.parsed.x;
+                                    return `${label}: ${value}주`;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            stacked: true,
+                            title: { display: true, text: '소요 기간 (주)' },
+                            max: 12
+                        },
+                        y: {
+                            stacked: true,
+                            ticks: {
+                                autoSkip: false
+                            }
+                        }
+                    }
+                }
+            });
+
+        });
+    </script>
+</body>
+
+</html>
