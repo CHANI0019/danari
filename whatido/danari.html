@@ -7,6 +7,12 @@
     <title>DANARI-COIN: 미래를 향한 새로운 길</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
+        body {
+            background-image: url('../images/danari.png'); /* Replace with your image path */
+            background-size: auto; /* Cover the entire viewport */
+            background-repeat: repeat; /* Prevent the image from tiling */
+            background-attachment: fixed; /* Keep the background fixed during scrolling (optional) */
+        }
         .text-danari {
             color: #9BE28F;
         }
@@ -14,6 +20,9 @@
         .bg-danari {
             background-color: #9BE28F;
         }
+    </style>
+    <style>
+        
     </style>
 </head>
 
@@ -39,7 +48,7 @@
     </section>
 
     <!-- Core Values -->
-    <section class="bg-emerald-900 py-16 px-6">
+    <section class="bg-emerald-900 bg-opacity-50 py-16 px-6">
         <div class="max-w-5xl mx-auto">
             <h2 class="text-3xl font-bold text-danari mb-10">핵심 가치</h2>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-10 text-gray-300 text-lg">
@@ -74,7 +83,7 @@
     </section>
 
     <!-- Roadmap -->
-    <section class="bg-emerald-900 py-16 px-6">
+    <section class="bg-emerald-900 bg-opacity-50 py-16 px-6">
         <div class="max-w-5xl mx-auto">
             <h2 class="text-3xl font-bold text-danari mb-8">미래를 향한 여정: 로드맵</h2>
             <div class="space-y-8 text-lg text-gray-300">
@@ -108,6 +117,7 @@
     </section>
     <section class="text-center py-16 px-6" data-aos="fade-up">
         <a href="DANARI 스테이블코인 MVP 개발 계획서.html">
+            
             <button
                 class="bg-danari text-gray-900 px-6 py-3 rounded-full font-semibold shadow hover:scale-105 transition">
                 DANARI 스테이블코인 MVP 개발 계획서
