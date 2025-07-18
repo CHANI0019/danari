@@ -9,6 +9,12 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
     <style>
+        body {
+            background-image: url('../images/stablecoin.png'); /* Replace with your image path */
+            background-size: auto; /* Cover the entire viewport */
+            background-repeat: repeat; /* Prevent the image from tiling */
+            background-attachment: fixed; /* Keep the background fixed during scrolling (optional) */
+        }
         .text-danari-green {
             color: #9BE28F;
         }
@@ -28,7 +34,7 @@
     </header>
 
     <!-- 안정성 설명 -->
-    <section class="px-6 md:px-20 lg:px-40 py-12 bg-gray-800 rounded-xl mx-4 my-10" data-aos="fade-up">
+    <section class="px-6 md:px-20 lg:px-40 py-12 bg-gray-800 bg-opacity-50 rounded-xl mx-4 my-10 " data-aos="fade-up">
         <h2 class="text-3xl font-semibold text-center mb-6">왜 DANARI-COIN인가?</h2>
         <p class="text-lg text-center text-gray-300">
             DANARI-COIN은 실물 기반 자산(예: 삼성전자 주식 100,000주 등)을 담보로 발행되며,
@@ -39,7 +45,7 @@
     <!-- 지표 시각화 -->
     <section class="px-6 md:px-20 py-10" data-aos="fade-up">
         <h2 class="text-2xl font-bold text-center mb-6">실시간 담보 자산 비율</h2>
-        <div class="max-w-xl mx-auto bg-gray-800 p-6 rounded-2xl shadow-xl">
+        <div class="max-w-xl mx-auto bg-gray-800 bg-opacity-50 p-6 rounded-2xl shadow-xl">
             <canvas id="reserveChart"></canvas>
         </div>
     </section>
@@ -57,8 +63,9 @@
             </button>
         <a href="engwhitepaper.html" target="_blank">
             <button class="bg-danari-green text-gray-900 font-semibold px-6 py-3 rounded-full shadow-lg transition hover:scale-105">
-                whitepaper
+                whitepaper download
             </button>
+
 
         </a>
         
