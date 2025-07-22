@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DANARI TALENT MARKET</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            margin: 2em;
+            background-color: #f4f4f9;
+            color: #333;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: auto;
+            background: white;
+            padding: 2em;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1,
+        h2 {
+            color: #4a4a4a;
+        }
+
+        .wallet,
+        .talent-form,
+        .talent-list {
+            margin-bottom: 2em;
+            padding: 1em;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        .talent-item {
+            border-bottom: 1px solid #eee;
+            padding: 1em 0;
+        }
+
+        .talent-item:last-child {
+            border-bottom: none;
+        }
+
+        input,
+        textarea,
+        button {
+            padding: 0.8em;
+            margin-top: 0.5em;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+            width: calc(100% - 1.8em);
+        }
+
+        button {
+            background-color: #5c67f2;
+            color: white;
+            cursor: pointer;
+            border: none;
+        }
+
+        button:hover {
+            background-color: #4a54e1;
+        }
+
+        .buy-btn {
+            width: auto;
+            background-color: #28a745;
+        }
+
+        .buy-btn:hover {
+            background-color: #218838;
+        }
+
+        #status {
+            margin-top: 1em;
+            padding: 1em;
+            background-color: #e2e3e5;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <h1>DANARI 재능 마켓</h1>
+        <p>블록체인 기반의 재능 거래 플랫폼입니다.</p>
+
+        <div class="wallet">
+            <h2>내 지갑 정보</h2>
+            <label for="userId">내 아이디:</label>
+            <input type="text" id="userId" value="user1" placeholder="사용자 아이디를 입력하세요">
+            <button id="checkBalanceBtn">잔액 조회</button>
+            <p><strong>DANARI COIN 잔액:</strong> <span id="balance">0</span> DDC</p>
+        </div>
+
+        <div class="talent-form">
+            <h2>재능 등록하기</h2>
+            <input type="text" id="title" placeholder="재능 제목 (예: 로고 디자인)">
+            <textarea id="description" placeholder="상세 설명"></textarea>
+            <input type="number" id="price" placeholder="가격 (DUSD)">
+            <button id="registerTalentBtn">등록하기</button>
+        </div>
+
+        <div class="talent-list">
+            <h2>판매 중인 재능</h2>
+            <div id="talents"></div>
+        </div>
+
+        <div id="status">
+            <strong>상태 메시지:</strong> <span id="statusMessage">준비 완료.</span>
+        </div>
+    </div>
+
+    <script>
+        const API_URL = 'http://127.0.0.1:5000';
+        const userIdInput = document.getElementById('userId');
+        const balanceSpan = document.getElementById('balance');
+        const talentsDiv = document.getElementById('talents');
+        const statusMessageSpan = document.getElementById('statusMessage');
+
+        // --- 이벤트 리스너 설정 ---
+        document.getElementById('checkBalanceBtn').addEventListener('click', checkBalance);
+        document.getElementById('registerTalentBtn').addEventListener('click', registerTalent);
+
+        // --- 함수 정의 ---
+
+        // 잔액 조회 함수
+        async function checkBalance() {
+            const userId = userIdInput.value;
+            if (!userId) {
+                alert('사용자 아이디를 입력해주세요.');
+                return;
+            }
+            try {
+                const response = await fetch(`${API_URL}/wallet/${userId}`);
+                const data = await response.json();
+                if (response.ok) {
+                    balanceSpan.textContent = data.balance;
+                    updateStatus(`'${userId}'님의 잔액을 성공적으로 조회했습니다.`);
+                } else {
+                    throw new Error(data);
+                }
+            } catch (error) {
+                console.error('잔액 조회 실패:', error);
+                updateStatus('잔액 조회에 실패했습니다.');
+            }
+        }
+
+        // 재능 목록 불러오기 함수
+        async function fetchTalents() {
+            try {
+                const response = await fetch(`${API_URL}/talents`);
+                const data = await response.json();
+                talentsDiv.innerHTML = ''; // 기존 목록 초기화
+                if (data.talents.length === 0) {
+                    talentsDiv.innerHTML = '<p>판매 중인 재능이 없습니다.</p>';
+                } else {
+                    data.talents.forEach(talent => {
+                        const talentEl = document.createElement('div');
+                        talentEl.className = 'talent-item';
+                        talentEl.innerHTML = `
+                            <h3>${talent.title}</h3>
+                            <p>${talent.description}</p>
+                            <p><strong>판매자:</strong> ${talent.seller}</p>
+                            <p><strong>가격:</strong> ${talent.price} DDC</p>
+                            <button class="buy-btn" onclick="buyTalent('${talent.id}')">구매하기</button>
+                        `;
+                        talentsDiv.appendChild(talentEl);
+                    });
+                }
+                updateStatus('재능 목록을 새로고침했습니다.');
+            } catch (error) {
+                console.error('재능 목록 로딩 실패:', error);
+                updateStatus('재능 목록을 불러오는 데 실패했습니다.');
+            }
+        }
+
+        // 재능 등록 함수
+        async function registerTalent() {
+            const seller = userIdInput.value;
+            const title = document.getElementById('title').value;
+            const description = document.getElementById('description').value;
+            const price = parseInt(document.getElementById('price').value, 10);
+
+            if (!seller || !title || !description || !price) {
+                alert('모든 필드를 입력해주세요.');
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_URL}/talents/new`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ seller, title, description, price })
+                });
+                const data = await response.json();
+                if (response.ok) {
+                    updateStatus(data.message);
+                    // 폼 초기화 및 목록 새로고침
+                    document.getElementById('title').value = '';
+                    document.getElementById('description').value = '';
+                    document.getElementById('price').value = '';
+                    fetchTalents();
+                } else {
+                    throw new Error(data);
+                }
+            } catch (error) {
+                console.error('재능 등록 실패:', error);
+                updateStatus('재능 등록에 실패했습니다.');
+            }
+        }
+
+        // 재능 구매 함수
+        async function buyTalent(talentId) {
+            const buyerId = userIdInput.value;
+            if (!buyerId) {
+                alert('구매자로 사용할 사용자 아이디를 입력해주세요.');
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_URL}/talents/buy`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ talent_id: talentId, buyer_id: buyerId })
+                });
+                const data = await response.json();
+                if (response.ok) {
+                    updateStatus(data.message + ' 채굴(mine)을 통해 거래를 확정하세요.');
+                    alert('구매 요청이 성공적으로 전송되었습니다. 거래는 다음 블록이 채굴될 때 확정됩니다.');
+                    // 실제 시스템에서는 채굴이 자동으로 일어나지만, 여기서는 수동으로 알려줌
+                } else {
+                    // 서버에서 보낸 에러 메시지를 alert으로 표시
+                    alert(`구매 실패: ${data}`);
+                    throw new Error(data);
+                }
+            } catch (error) {
+                console.error('구매 실패:', error);
+                updateStatus('구매 요청에 실패했습니다.');
+            }
+        }
+
+        // 상태 메시지 업데이트 함수
+        function updateStatus(message) {
+            statusMessageSpan.textContent = message;
+            console.log(`Status: ${message}`);
+        }
+
+        // 페이지 로드 시 초기 데이터 로드
+        window.onload = () => {
+            checkBalance();
+            fetchTalents();
+        };
+    </script>
+
+</body>
+
+</html>
