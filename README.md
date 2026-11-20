@@ -76,3 +76,16 @@ npm run dev
    - **Source** 항목을 `GitHub Actions`로 선택합니다.
 4. 푸시 즉시 `.github/workflows/deploy.yml` 액션이 자동으로 실행되어 정적 빌드 및 배포가 완료됩니다!
 
+## 지금 바로 배포 실행하기
+
+1. 터미널(d:\danari_net)에서 아래 명령어를 실행하세요:
+'''powershell
+npm run deploy
+'''
+
+2. 실행이 끝나고 Published 메시지가 뜨면 1~2분 안에 https://www.danari.net 에 새 3D 우주 성계 + PWA가 바로 반영됩니다!
+(소스코드 변경 사항도 GitHub main 브랜치에 동기화하려면 git push origin main도 함께 실행해 두세요.)
+
+✨ 앞으로 새 프로젝트를 추가할 때 (요구사항 11번)
+1. src/data/projects.js에 새 프로젝트 1개 추가
+2. 터미널에 npm run deploy 한 줄만 입력 ➡️ 끝!

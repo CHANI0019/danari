@@ -9,3 +9,4 @@ echo.
 start "" http://localhost:5173
 call npm run dev
 pause
+
