@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DANARI UNIVERSE | 3D Interactive Portfolio & Project Hub</title>
+    <meta name="description" content="다나리 에코시스템 3D 인터랙티브 우주 성계 포트폴리오. AI Business OS, 웹 서비스, 자동화 에이전트, 퀀트 시스템." />
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Pretendard:wght@300;400;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/src/style.css" />
+  </head>
+  <body>
+    <!-- 3D WebGL Canvas Container -->
+    <div id="webgl-container"></div>
+
+    <!-- UI Overlay Layer -->
+    <div id="ui-layer">
+      <!-- Top Navigation Bar -->
+      <header class="hud-header">
+        <div class="brand">
+          <div class="brand-pulse"></div>
+          <div>
+            <h1 class="brand-title">DANARI <span>UNIVERSE</span></h1>
+            <p class="brand-sub">Autonomous Ecosystem & Portfolio System</p>
+          </div>
+        </div>
+
+        <!-- Category Filters -->
+        <nav class="category-filters" id="category-filters">
+          <!-- Dynamically injected via ui.js -->
+        </nav>
+
+        <div class="header-actions">
+          <button id="btn-reset-view" class="hud-btn" title="우주 전체 조망으로 시점 초기화">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+            <span>전체 조망</span>
+          </button>
+          <button id="btn-toggle-sidebar" class="hud-btn" title="프로젝트 목록 열기/닫기">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+            <span>프로젝트 목록</span>
+          </button>
+        </div>
+      </header>
+
+      <!-- Left Sidebar (Project Explorer) -->
+      <aside id="sidebar" class="hud-sidebar">
+        <div class="sidebar-header">
+          <div class="sidebar-title">
+            <span>EXPLORER</span>
+            <span id="project-count-badge" class="count-badge">0</span>
+          </div>
+          <button id="btn-close-sidebar" class="icon-btn">&times;</button>
+        </div>
+        <div class="sidebar-search">
+          <input type="text" id="search-input" placeholder="프로젝트 또는 키워드 검색..." />
+        </div>
+        <div class="sidebar-list" id="project-list">
+          <!-- Dynamically injected via ui.js -->
+        </div>
+      </aside>
+
+      <!-- Right HUD Detail Panel (Modal) -->
+      <aside id="detail-panel" class="hud-detail-panel closed">
+        <button id="btn-close-detail" class="icon-btn detail-close">&times;</button>
+        
+        <div class="detail-content">
+          <div class="detail-category-badge" id="detail-category">CATEGORY</div>
+          <h2 class="detail-title" id="detail-title">Project Name</h2>
+          <p class="detail-summary" id="detail-summary">Summary</p>
+
+          <div class="detail-meta-box">
+            <div class="meta-row" id="meta-url-row">
+              <span class="meta-label">WEB LINK</span>
+              <a href="#" id="detail-url" target="_blank" rel="noopener noreferrer" class="meta-link">
+                <span id="detail-url-text">https://...</span>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+              </a>
+            </div>
+            <div class="meta-row" id="meta-path-row">
+              <span class="meta-label">LOCAL PATH</span>
+              <div class="meta-path-wrap">
+                <code id="detail-path">D:\...</code>
+                <button id="btn-copy-path" class="copy-btn" title="경로 복사">복사</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="detail-section">
+            <h3 class="section-title">시스템 설명</h3>
+            <p class="detail-desc" id="detail-desc">Full description goes here...</p>
+          </div>
+
+          <!-- Satellites / Sub-agents section (e.g. for cluster) -->
+          <div class="detail-section" id="detail-satellites-section" style="display: none;">
+            <h3 class="section-title">소속 서브 에이전트 / 파이프라인</h3>
+            <div class="satellites-grid" id="detail-satellites-list">
+              <!-- Dynamically injected -->
+            </div>
+          </div>
+
+          <div class="detail-section">
+            <h3 class="section-title">기술 스택 & 태그</h3>
+            <div class="detail-tags" id="detail-tags">
+              <!-- Dynamically injected -->
+            </div>
+          </div>
+
+          <div class="detail-actions">
+            <button id="btn-focus-planet" class="hud-btn primary">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/></svg>
+              <span>행성 추적 모드</span>
+            </button>
+          </div>
+        </div>
+      </aside>
+
+      <!-- Bottom Status & Guide Bar -->
+      <footer class="hud-footer">
+        <div class="guide-item">
+          <kbd>좌클릭 + 드래그</kbd> 3D 궤도 회전
+        </div>
+        <div class="guide-item">
+          <kbd>휠 스크롤</kbd> 줌 인/아웃
+        </div>
+        <div class="guide-item">
+          <kbd>우클릭 + 드래그</kbd> 화면 이동
+        </div>
+        <div class="guide-item highlight">
+          <kbd>행성 클릭</kbd> 프로젝트 상세 탐색
+        </div>
+        <div class="system-status">
+          <span class="status-indicator"></span>
+          <span>ORBITAL ENGINE ACTIVE (v1.0.0)</span>
+        </div>
+      </footer>
+    </div>
+
+    <!-- Planet Hover Tooltip -->
+    <div id="planet-tooltip" class="planet-tooltip">
+      <div class="tooltip-title">Planet Name</div>
+      <div class="tooltip-sub">Category</div>
+    </div>
+
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
