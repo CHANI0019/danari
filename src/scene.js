@@ -36,8 +36,8 @@ export class SolarSystemScene {
     this.scene.fog = new THREE.FogExp2(0x05070f, 0.0035);
 
     // 2. Camera
-    const width = this.container.clientWidth;
-    const height = this.container.clientHeight;
+    const width = this.container.clientWidth || window.innerWidth;
+    const height = this.container.clientHeight || window.innerHeight;
     this.camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 2000);
     this.camera.position.copy(this.defaultCameraPos);
 
@@ -58,10 +58,13 @@ export class SolarSystemScene {
     this.controls.target.copy(this.defaultTarget);
 
     // 5. Lights
-    this.ambientLight = new THREE.AmbientLight(0x222a44, 1.8);
+    this.ambientLight = new THREE.AmbientLight(0x4a5b8c, 2.2);
     this.scene.add(this.ambientLight);
 
-    this.sunLight = new THREE.PointLight(0xffffff, 4.5, 300, 0.5);
+    this.hemiLight = new THREE.HemisphereLight(0x88ccff, 0x1a1033, 1.2);
+    this.scene.add(this.hemiLight);
+
+    this.sunLight = new THREE.PointLight(0xffffff, 3.5, 0, 0);
     this.sunLight.position.set(0, 0, 0);
     this.scene.add(this.sunLight);
 
@@ -578,3 +581,4 @@ export class SolarSystemScene {
     this.renderer.render(this.scene, this.camera);
   }
 }
+
