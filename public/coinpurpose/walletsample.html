@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DANARI Wallet Sample</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap');
+
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+        }
+
+        .wallet-container {
+            max-width: 420px;
+        }
+
+        .modal-backdrop {
+            transition: opacity 0.3s ease;
+        }
+
+        .modal-content {
+            transition: transform 0.3s ease;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-100 flex items-center justify-center min-h-screen">
+
+    <div class="wallet-container w-full bg-white shadow-2xl rounded-3xl overflow-hidden">
+        <!-- Header -->
+        <header class="p-4 bg-gray-50 border-b flex justify-between items-center">
+            <h1 class="text-xl font-bold text-gray-800">DANARI Wallet</h1>
+            <div class="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center text-white font-bold text-lg">
+                D</div>
+        </header>
+
+        <!-- Balance Card -->
+        <div class="p-6 bg-blue-600 text-white">
+            <p class="text-sm opacity-80">나의 DUSD 잔액</p>
+            <p id="balance" class="text-4xl font-bold mt-2">0 DUSD</p>
+            <p id="wallet-address" class="text-xs opacity-70 mt-4 font-mono"></p>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="p-4 grid grid-cols-2 gap-4">
+            <button id="send-btn"
+                class="flex flex-col items-center justify-center bg-blue-50 hover:bg-blue-100 text-blue-700 font-semibold p-4 rounded-xl transition">
+                <svg class="w-8 h-8 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                    <path d="M3 10h4V6H3v4zm5 0h4V6H8v4zm5 0h4V6h-4v4zM3 15h4v-4H3v4zm5 0h4v-4H8v4zm5 0h4v-4h-4v4z">
+                    </path>
+                </svg>
+                보내기 (QR 스캔)
+            </button>
+            <button id="receive-btn"
+                class="flex flex-col items-center justify-center bg-blue-50 hover:bg-blue-100 text-blue-700 font-semibold p-4 rounded-xl transition">
+                <svg class="w-8 h-8 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
+                </svg>
+                받기
+            </button>
+        </div>
+
+        <!-- Transaction History -->
+        <div class="p-4">
+            <h2 class="text-lg font-bold text-gray-800 mb-3">거래 내역</h2>
+            <div id="transaction-list" class="space-y-3 h-64 overflow-y-auto">
+                <!-- Transactions will be injected here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Send Modal -->
+    <div id="send-modal"
+        class="modal-backdrop fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 hidden opacity-0">
+        <div class="modal-content bg-white w-full max-w-sm rounded-xl p-6 shadow-lg transform scale-95">
+            <h2 class="text-xl font-bold mb-4">DUSD 보내기</h2>
+            <p class="text-sm text-gray-600 mb-6">실제 앱에서는 이 화면에서 QR코드를 스캔합니다. MVP에서는 주소와 금액을 직접 입력하여 테스트합니다.</p>
+            <form id="send-form" class="space-y-4">
+                <div>
+                    <label for="to-address" class="block text-sm font-medium text-gray-700">받는 사람 주소</label>
+                    <input type="text" id="to-address" class="mt-1 w-full border-gray-300 rounded-md shadow-sm"
+                        value="0xRestaurant...Wallet" required>
+                </div>
+                <div>
+                    <label for="send-amount" class="block text-sm font-medium text-gray-700">보낼 금액 (DUSD)</label>
+                    <input type="number" id="send-amount" class="mt-1 w-full border-gray-300 rounded-md shadow-sm"
+                        placeholder="예: 6500" required>
+                </div>
+                <div class="pt-4 flex justify-end space-x-3">
+                    <button type="button" id="cancel-send"
+                        class="px-4 py-2 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300">취소</button>
+                    <button type="submit"
+                        class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">전송하기</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Receive Modal -->
+    <div id="receive-modal"
+        class="modal-backdrop fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 hidden opacity-0">
+        <div class="modal-content bg-white w-full max-w-sm rounded-xl p-6 shadow-lg text-center transform scale-95">
+            <h2 class="text-xl font-bold mb-4">내 DUSD 지갑 주소</h2>
+            <div class="w-48 h-48 bg-gray-800 mx-auto my-4 flex items-center justify-center p-2">
+                <div class="w-full h-full border-4 border-white"></div>
+            </div>
+            <p class="text-sm text-gray-600">다른 사람에게 DUSD를 받으려면 위 QR코드를 보여주거나 아래 주소를 복사하여 공유하세요.</p>
+            <p id="my-address-display" class="font-mono bg-gray-100 p-2 rounded-md my-4 text-xs break-all"></p>
+            <button id="close-receive"
+                class="mt-4 w-full px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">닫기</button>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const wallet = {
+                balance: 10000,
+                address: '0xUserA...Wallet123',
+                transactions: [
+                    { type: 'receive', from: 'DANARI Admin', amount: 10000, timestamp: new Date() },
+                ]
+            };
+
+            const balanceEl = document.getElementById('balance');
+            const walletAddressEl = document.getElementById('wallet-address');
+            const transactionListEl = document.getElementById('transaction-list');
+
+            const sendBtn = document.getElementById('send-btn');
+            const receiveBtn = document.getElementById('receive-btn');
+
+            const sendModal = document.getElementById('send-modal');
+            const receiveModal = document.getElementById('receive-modal');
+
+            const sendForm = document.getElementById('send-form');
+            const cancelSendBtn = document.getElementById('cancel-send');
+            const closeReceiveBtn = document.getElementById('close-receive');
+
+            const myAddressDisplay = document.getElementById('my-address-display');
+
+            const formatCurrency = (amount) => `${amount.toLocaleString()} DUSD`;
+
+            const updateUI = () => {
+                balanceEl.textContent = formatCurrency(wallet.balance);
+                walletAddressEl.textContent = wallet.address;
+                myAddressDisplay.textContent = wallet.address;
+
+                transactionListEl.innerHTML = '';
+                if (wallet.transactions.length === 0) {
+                    transactionListEl.innerHTML = `<p class="text-center text-gray-500 mt-8">거래 내역이 없습니다.</p>`;
+                } else {
+                    wallet.transactions.slice().reverse().forEach(tx => {
+                        const isSend = tx.type === 'send';
+                        const txEl = document.createElement('div');
+                        txEl.className = 'flex items-center justify-between p-3 bg-gray-50 rounded-lg';
+                        txEl.innerHTML = `
+                            <div class="flex items-center">
+                                <div class="w-10 h-10 rounded-full flex items-center justify-center mr-3 ${isSend ? 'bg-red-100 text-red-600' : 'bg-green-100 text-green-600'}">
+                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        ${isSend ? '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"></path>' : '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>'}
+                                    </svg>
+                                </div>
+                                <div>
+                                    <p class="font-semibold">${isSend ? '보내기' : '받기'}</p>
+                                    <p class="text-xs text-gray-500">${isSend ? `To: ${tx.to}` : `From: ${tx.from}`}</p>
+                                </div>
+                            </div>
+                            <div>
+                                <p class="font-bold text-right ${isSend ? 'text-red-600' : 'text-green-600'}">
+                                    ${isSend ? '-' : '+'} ${formatCurrency(tx.amount)}
+                                </p>
+                                <p class="text-xs text-gray-500 text-right">${new Date(tx.timestamp).toLocaleTimeString('ko-KR')}</p>
+                            </div>
+                        `;
+                        transactionListEl.appendChild(txEl);
+                    });
+                }
+            };
+
+            const openModal = (modal) => {
+                modal.classList.remove('hidden');
+                setTimeout(() => {
+                    modal.classList.remove('opacity-0');
+                    modal.querySelector('.modal-content').classList.remove('scale-95');
+                }, 10);
+            };
+
+            const closeModal = (modal) => {
+                modal.classList.add('opacity-0');
+                modal.querySelector('.modal-content').classList.add('scale-95');
+                setTimeout(() => modal.classList.add('hidden'), 300);
+            };
+
+            sendBtn.addEventListener('click', () => openModal(sendModal));
+            receiveBtn.addEventListener('click', () => openModal(receiveModal));
+
+            cancelSendBtn.addEventListener('click', () => closeModal(sendModal));
+            closeReceiveBtn.addEventListener('click', () => closeModal(receiveModal));
+
+            sendForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const to = document.getElementById('to-address').value;
+                const amount = parseFloat(document.getElementById('send-amount').value);
+
+                if (amount > 0 && amount <= wallet.balance) {
+                    wallet.balance -= amount;
+                    wallet.transactions.push({
+                        type: 'send',
+                        to: to,
+                        amount: amount,
+                        timestamp: new Date()
+                    });
+                    updateUI();
+                    closeModal(sendModal);
+                    sendForm.reset();
+                } else {
+                    alert('잔액이 부족하거나 유효하지 않은 금액입니다.');
+                }
+            });
+
+            updateUI();
+        });
+    </script>
+
+</body>
+
+</html>

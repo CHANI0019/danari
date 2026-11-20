@@ -75,3 +75,4 @@ npm run dev
 3. GitHub 저장소의 **Settings** -> **Pages** 로 이동:
    - **Source** 항목을 `GitHub Actions`로 선택합니다.
 4. 푸시 즉시 `.github/workflows/deploy.yml` 액션이 자동으로 실행되어 정적 빌드 및 배포가 완료됩니다!
+

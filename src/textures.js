@@ -600,3 +600,4 @@ export function getPlanetTextureByType(planetType, fallbackColor = '#38bdf8', se
     }
   }
 }
+
