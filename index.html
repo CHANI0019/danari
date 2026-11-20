@@ -5,6 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>DANARI UNIVERSE | 3D Interactive Portfolio & Project Hub</title>
     <meta name="description" content="다나리 에코시스템 3D 인터랙티브 우주 성계 포트폴리오. AI Business OS, 웹 서비스, 자동화 에이전트, 퀀트 시스템." />
+    <!-- PWA Metadata -->
+    <link rel="manifest" href="./manifest.webmanifest" />
+    <meta name="theme-color" content="#05070f" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="DANARI" />
+    <link rel="apple-touch-icon" href="./apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png" />
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -33,6 +42,10 @@
         </nav>
 
         <div class="header-actions">
+          <button id="btn-install-pwa" class="hud-btn primary" style="display: none;" title="기기에 앱으로 설치">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            <span>앱 설치</span>
+          </button>
           <button id="btn-reset-view" class="hud-btn" title="우주 전체 조망으로 시점 초기화">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
             <span>전체 조망</span>
