@@ -112,8 +112,8 @@ export class SolarSystemScene {
     // Subtle Galactic Dust / Nebula Ring
     const nebulaCount = 1200;
     const nebGeo = new THREE.BufferGeometry();
-    const nebPos = new Float32Array(nebCount * 3);
-    const nebColors = new Float32Array(nebCount * 3);
+    const nebPos = new Float32Array(nebulaCount * 3);
+    const nebColors = new Float32Array(nebulaCount * 3);
 
     for (let i = 0; i < nebulaCount; i++) {
       const radius = 60 + Math.random() * 90;
@@ -228,17 +228,17 @@ export class SolarSystemScene {
 
   createLabelSprite(text, color = '#ffffff', scale = 1.0) {
     const canvas = document.createElement('canvas');
-    canvas.width = 256;
-    canvas.height = 64;
+    canvas.width = 512;
+    canvas.height = 96;
     const ctx = canvas.getContext('2d');
 
-    ctx.font = 'bold 24px "Orbitron", sans-serif';
+    ctx.font = 'bold 28px "Pretendard", "Orbitron", sans-serif';
     ctx.fillStyle = color;
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
-    ctx.shadowColor = 'rgba(0,0,0,0.8)';
-    ctx.shadowBlur = 8;
-    ctx.fillText(text, 128, 32);
+    ctx.shadowColor = 'rgba(0,0,0,0.9)';
+    ctx.shadowBlur = 10;
+    ctx.fillText(text, 256, 48);
 
     const texture = new THREE.CanvasTexture(canvas);
     const spriteMat = new THREE.SpriteMaterial({
@@ -247,7 +247,7 @@ export class SolarSystemScene {
       depthTest: false
     });
     const sprite = new THREE.Sprite(spriteMat);
-    sprite.scale.set(6 * scale, 1.5 * scale, 1);
+    sprite.scale.set(10 * scale, 1.9 * scale, 1);
     return sprite;
   }
 
