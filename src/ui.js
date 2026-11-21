@@ -20,6 +20,11 @@ export class UIManager {
   }
 
   init() {
+    // On mobile/narrow viewports, start with sidebar closed so the 3D universe is front and center
+    if (window.innerWidth <= 900 && this.sidebar) {
+      this.sidebar.classList.add('closed');
+    }
+
     this.renderCategoryFilters();
     this.renderProjectList();
     this.bindEvents();
@@ -65,6 +70,9 @@ export class UIManager {
       item.addEventListener('click', () => {
         this.selectProject(p);
         this.scene.focusPlanet(p.id);
+        if (window.innerWidth <= 900 && this.sidebar) {
+          this.sidebar.classList.add('closed');
+        }
       });
       this.projectList.appendChild(item);
     });

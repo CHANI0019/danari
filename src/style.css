@@ -24,11 +24,13 @@
 body {
   width: 100vw;
   height: 100vh;
+  height: 100dvh;
   overflow: hidden;
   background-color: var(--bg-dark);
   color: var(--text-main);
   font-family: var(--font-body);
   user-select: none;
+  -webkit-tap-highlight-color: transparent;
 }
 
 /* 3D WebGL Canvas */
@@ -652,22 +654,111 @@ kbd {
   background: rgba(255, 255, 255, 0.3);
 }
 
-/* Responsive */
+/* Responsive (Mobile & Tablet PWA Optimization) */
 @media (max-width: 900px) {
+  .hud-header {
+    padding: calc(10px + env(safe-area-inset-top, 0px)) 14px 10px 14px;
+    gap: 8px;
+  }
+
+  .brand {
+    gap: 8px;
+    min-width: 0;
+  }
+
+  .brand-pulse {
+    width: 10px;
+    height: 10px;
+    flex-shrink: 0;
+  }
+
+  .brand-title {
+    font-size: 1rem;
+    letter-spacing: 1px;
+    white-space: nowrap;
+  }
+
+  .brand-sub {
+    display: none;
+  }
+
   .category-filters {
     display: none;
   }
-  .hud-detail-panel {
-    width: calc(100vw - 32px);
-    right: 16px;
-    top: 75px;
+
+  .header-actions {
+    gap: 6px;
+    flex-shrink: 0;
   }
+
+  .hud-btn {
+    padding: 8px 10px;
+    font-size: 0.76rem;
+    gap: 5px;
+    white-space: nowrap;
+  }
+
+  /* Compact icon-only buttons on very narrow screens */
+  #btn-reset-view span,
+  #btn-toggle-sidebar span {
+    display: none;
+  }
+
   .hud-sidebar {
-    width: calc(100vw - 32px);
-    left: 16px;
-    top: 75px;
+    top: calc(58px + env(safe-area-inset-top, 0px));
+    left: 12px;
+    width: calc(100vw - 24px);
+    max-height: calc(100dvh - 125px);
+    z-index: 30;
   }
+
+  .hud-sidebar.closed {
+    transform: translateX(-110%);
+  }
+
+  /* Mobile Bottom Sheet for Detail Panel so 3D planet stays visible on top */
+  .hud-detail-panel {
+    top: auto;
+    bottom: calc(12px + env(safe-area-inset-bottom, 0px));
+    left: 12px;
+    right: 12px;
+    width: calc(100vw - 24px);
+    max-width: none;
+    max-height: 56dvh;
+    z-index: 35;
+    border-radius: 18px;
+  }
+
+  .hud-detail-panel.closed {
+    transform: translateY(115%);
+    opacity: 0;
+  }
+
+  .detail-content {
+    padding: 20px 18px;
+    gap: 14px;
+  }
+
+  .detail-title {
+    font-size: 1.2rem;
+  }
+
+  .detail-summary {
+    font-size: 0.85rem;
+  }
+
+  .hud-footer {
+    padding: 8px 14px calc(10px + env(safe-area-inset-bottom, 0px)) 14px;
+    font-size: 0.72rem;
+    gap: 8px;
+    justify-content: space-between;
+  }
+
   .hud-footer .guide-item:not(.highlight) {
     display: none;
+  }
+
+  .system-status {
+    font-size: 0.66rem;
   }
 }

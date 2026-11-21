@@ -26,8 +26,11 @@ export class SolarSystemScene {
     this.onSelectPlanet = null;
     this.onHoverPlanet = null;
 
-    // Default Camera Pos
-    this.defaultCameraPos = new THREE.Vector3(0, 82, 132);
+    // Default Camera Pos (pull back slightly on narrow mobile portrait screens)
+    const isMobilePortrait = window.innerWidth < window.innerHeight && window.innerWidth <= 900;
+    this.defaultCameraPos = isMobilePortrait
+      ? new THREE.Vector3(0, 115, 185)
+      : new THREE.Vector3(0, 82, 132);
     this.defaultTarget = new THREE.Vector3(0, 0, 0);
 
     this.init();
