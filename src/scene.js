@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import gsap from 'gsap';
-import { projects } from './data/projects.js';
+import { projects, danariCore } from './data/projects.js';
 import {
   createSunTexture,
   createCloudTexture,
@@ -219,6 +219,7 @@ export class SolarSystemScene {
       map: sunTexture
     });
     this.sunCore = new THREE.Mesh(sunGeo, sunMat);
+    this.sunCore.userData = { project: danariCore, type: 'sun' };
     this.sunGroup.add(this.sunCore);
 
     // Inner Fiery Corona Glow
@@ -542,10 +543,15 @@ export class SolarSystemScene {
     });
   }
 
+  getClickableTargets() {
+    const targets = this.planetMeshes.map(p => p.mesh);
+    if (this.sunCore) targets.unshift(this.sunCore);
+    return targets;
+  }
+
   checkHover(clientX, clientY) {
     this.raycaster.setFromCamera(this.mouse, this.camera);
-    const targetObjects = this.planetMeshes.map(p => p.mesh);
-    const intersects = this.raycaster.intersectObjects(targetObjects, false);
+    const intersects = this.raycaster.intersectObjects(this.getClickableTargets(), false);
 
     if (intersects.length > 0) {
       const hit = intersects[0].object;
@@ -567,8 +573,7 @@ export class SolarSystemScene {
 
   checkClick() {
     this.raycaster.setFromCamera(this.mouse, this.camera);
-    const targetObjects = this.planetMeshes.map(p => p.mesh);
-    const intersects = this.raycaster.intersectObjects(targetObjects, false);
+    const intersects = this.raycaster.intersectObjects(this.getClickableTargets(), false);
 
     if (intersects.length > 0) {
       const hit = intersects[0].object;
@@ -582,6 +587,29 @@ export class SolarSystemScene {
   }
 
   focusPlanet(projectId) {
+    // Focus Central Sun (DANARI CORE)
+    if (projectId === danariCore.id) {
+      this.activePlanet = null;
+      this.trackingMode = false;
+
+      gsap.to(this.camera.position, {
+        x: 0,
+        y: 14,
+        z: 30,
+        duration: 1.5,
+        ease: 'power2.inOut'
+      });
+
+      gsap.to(this.controls.target, {
+        x: 0,
+        y: 0,
+        z: 0,
+        duration: 1.5,
+        ease: 'power2.inOut'
+      });
+      return;
+    }
+
     const found = this.planetMeshes.find(p => p.project.id === projectId);
     if (!found) return;
 

@@ -9,6 +9,20 @@
  *
  * 커스텀 이미지 사용 시 textureUrl: "/textures/my-planet.jpg" 지정 가능
  */
+export const danariCore = {
+  id: "danari-core",
+  title: "DANARI CORE",
+  category: "CORE PHILOSOPHY",
+  isCore: true,
+  url: "https://ceo.danari.co.kr/",
+  phone: "010-3335-8245",
+  email: "ceodanari@naver.com",
+  summary: "풍요 · 행복 · 돈 — 인간의 삶은 모두 다 나아진다!",
+  description: "DANARI는 풍요, 행복, 돈을 뜻하며, 인간의삶은 모두 다 나아진다!라는철학으로 설립하였습니다.",
+  tags: ["DANARI", "풍요", "행복", "돈", "Philosophy", "CEO"],
+  color: "#f59e0b"
+};
+
 export const categories = {
   all: { label: "전체 프로젝트", color: "#6366f1" },
   os: { label: "AI Business OS", color: "#38bdf8" },

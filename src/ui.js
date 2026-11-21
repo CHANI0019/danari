@@ -1,4 +1,4 @@
-import { categories, projects } from './data/projects.js';
+import { categories, projects, danariCore } from './data/projects.js';
 
 export class UIManager {
   constructor(scene) {
@@ -88,6 +88,16 @@ export class UIManager {
   }
 
   bindEvents() {
+    // Brand click opens DANARI CORE info
+    const brandEl = document.querySelector('.brand');
+    if (brandEl) {
+      brandEl.style.cursor = 'pointer';
+      brandEl.addEventListener('click', () => {
+        this.selectProject(danariCore);
+        this.scene.focusPlanet(danariCore.id);
+      });
+    }
+
     // Reset view button
     document.getElementById('btn-reset-view').addEventListener('click', () => {
       this.scene.resetView();
@@ -179,6 +189,30 @@ export class UIManager {
       document.getElementById('detail-url-text').textContent = proj.url;
     } else {
       metaUrlRow.style.display = 'none';
+    }
+
+    // Contact Phone
+    const metaPhoneRow = document.getElementById('meta-phone-row');
+    if (metaPhoneRow) {
+      if (proj.phone) {
+        metaPhoneRow.style.display = 'flex';
+        document.getElementById('detail-phone').href = `tel:${proj.phone.replace(/[^0-9+]/g, '')}`;
+        document.getElementById('detail-phone-text').textContent = proj.phone;
+      } else {
+        metaPhoneRow.style.display = 'none';
+      }
+    }
+
+    // Contact Email
+    const metaEmailRow = document.getElementById('meta-email-row');
+    if (metaEmailRow) {
+      if (proj.email) {
+        metaEmailRow.style.display = 'flex';
+        document.getElementById('detail-email').href = `mailto:${proj.email}`;
+        document.getElementById('detail-email-text').textContent = proj.email;
+      } else {
+        metaEmailRow.style.display = 'none';
+      }
     }
 
     // Local Path
