@@ -342,9 +342,6 @@ export class SolarSystemScene {
 
   createPlanets() {
     this.projects.forEach((proj, idx) => {
-      // Orbit Line
-      this.createOrbitLine(proj.orbitRadius, proj.color);
-
       // Load custom image texture if textureUrl is specified, otherwise use realistic procedural solar planet
       let texture;
       if (proj.textureUrl) {
@@ -450,21 +447,6 @@ export class SolarSystemScene {
           const moonSize = 0.52;
           const moonRadius = proj.size + 3.2 + (satIdx * 0.95);
           const moonSpeed = 0.015 + (satIdx * 0.004);
-
-          // Sub orbit line
-          const subOrbitGeo = new THREE.BufferGeometry();
-          const subPts = [];
-          for (let s = 0; s <= 64; s++) {
-            const th = (s / 64) * Math.PI * 2;
-            subPts.push(Math.cos(th) * moonRadius, 0, Math.sin(th) * moonRadius);
-          }
-          subOrbitGeo.setAttribute('position', new THREE.Float32BufferAttribute(subPts, 3));
-          const subOrbitLine = new THREE.Line(subOrbitGeo, new THREE.LineBasicMaterial({
-            color: 0xf472b6,
-            transparent: true,
-            opacity: 0.22
-          }));
-          mesh.add(subOrbitLine);
 
           // Moon mesh with crater texture
           const moonMesh = new THREE.Mesh(
