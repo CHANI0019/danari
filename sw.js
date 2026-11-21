@@ -1,4 +1,4 @@
-const CACHE_NAME = 'danari-universe-v1';
+const CACHE_NAME = 'danari-universe-v2';
 const CORE_ASSETS = [
   './',
   './index.html',
